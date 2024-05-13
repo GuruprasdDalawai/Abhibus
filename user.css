@@ -1,0 +1,100 @@
+.display-inlineblock {
+  display: inline-block;
+}
+.float-right {
+  float: right;
+}
+
+.user-detail {
+  font-size: 12px;
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  border-radius: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+.user-detail span {
+  padding: 0;
+  margin: 0;
+}
+#Username {
+  color: maroon;
+}
+
+.book {
+  position: absolute;
+  top: 30%;
+  left: 25%;
+  background-color: white;
+  padding: 30px;
+  border: 2px solid;
+  border-radius: 15px;
+}
+
+/* .seatsDispaly {
+  background: green;
+} */
+.seat {
+  height: 30px;
+  width: 60px;
+  background-color: #ccc;
+  align-content: center;
+  border-radius: 5px;
+  text-align: center;
+  font-size: 10px;
+}
+.pillow {
+  float: right;
+  height: 15px;
+  width: 5px;
+  background-color: white;
+  margin-right: 2px;
+  border-radius: 0.5px;
+  border-color: inherit;
+}
+
+tr {
+  height: 30px;
+}
+
+.upperDekker,
+.lowerDekker {
+  display: flex;
+  padding: 15px;
+}
+.cabin {
+  align-content: center;
+  text-align: center;
+}
+.vertical-text {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.vertical-text span {
+  display: inline-block;
+  transform: rotate(-90deg); /* Counter-rotate characters */
+  padding-bottom: 35px;
+}
+
+.wheel {
+  transform: rotate(-90deg);
+}
+
+.seat.booked {
+  background-color: rgb(
+    122,
+    122,
+    122
+  ); /* or any other style to indicate it's booked */
+  cursor: not-allowed;
+}
+.seat.booked.female {
+  outline: 2px solid pink; /* or any other style to indicate it's a female booked seat */
+}
+
+.selected {
+  background-color: green;
+  color: white;
+}
