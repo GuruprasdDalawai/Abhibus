@@ -63,7 +63,7 @@
         <div class="">
           <span>₹800 </span>
           <span>3 seats Available</span>
-          <button class="btn">Book</button>
+          <button class="btn" onclick="showseats()">Book</button>
         </div>
       </div>
       <div id="addBus" class="Wrapper addBus">
@@ -88,7 +88,14 @@
         </div>
       </div>
 
-      <div class="book Wrapper">
+      <div class="book Wrapper" id="seatContiner">
+        <button
+          class="clsoeBtn"
+          id="updateClose"
+          onclick="closeSeatSelection()"
+        >
+          X
+        </button>
         <div class="busdetails">
           <span>Vijayapura</span>
           <span>24-05-2024</span>

@@ -10,8 +10,10 @@
       rel="stylesheet"
     />
     <link rel="stylesheet" href="./style.css" />
+    <script src="./index.js"></script>
     <title>Abhi bus</title>
   </head>
+
   <body>
     <header>
       <div class="Wrapper">
@@ -20,6 +22,7 @@
         </div>
       </div>
     </header>
+
     <main>
       <form id="searchForm" class="search">
         <div class="Wrapper displayLine">
@@ -37,43 +40,62 @@
           </div>
         </div>
       </form>
+
       <div class="backgroundLayer">
         <div id="LoginContainer" class="loginContent">
           <div class="Wrapper">
-            <form>
+            <div class="form">
               <h3 class="poppins-light">Login to AbhiBus</h3>
               <div class="input-box">
-                <input type="number" placeholder="Phone number" />
+                <input
+                  type="number"
+                  placeholder="Phone number"
+                  id="login_phonenumber"
+                />
               </div>
-              <div class="errorContainer" id="ErrorContainer">
+              <div class="errorContainer">
                 <sapn class="error" id="phone_err"
                   >please check your phonenumber</sapn
                 >
               </div>
               <div class="input-box">
-                <input type="password" placeholder="Password" />
+                <input
+                  type="password"
+                  placeholder="Password"
+                  id="login_password"
+                />
               </div>
-              <div class="errorContainer" id="ErrorContainer">
+              <div class="errorContainer">
                 <sapn class="error" id="pwd_err"
                   >please check your password</sapn
                 >
               </div>
-              <button class="btn" id="login_btn">Login</button>
+              <button class="btn" id="login_btn" onclick="loginBtn()">
+                Login
+              </button>
               <div class="register-link">
-                <p>Do you have an account? <a href="#">Register</a></p>
+                <p>
+                  Do you have an account?
+                  <span style="cursor: pointer" onclick="showRegister()"
+                    >Register</span
+                  >
+                </p>
               </div>
-            </form>
+            </div>
           </div>
         </div>
       </div>
       <div id="RegisterContainer" class="registerContent">
+        <div>
+          <button class="clsoeBtn" id="RegClose" onclick="regClose()">X</button>
+        </div>
         <div class="Wrapper">
-          <form>
+          <div class="form">
             <h3 class="poppins-light">Register to AbhiBus</h3>
             <div class="input-box">
               <input type="text" placeholder="Name" id="RegName" />
             </div>
-            <div class="errorContainer" id="ErrorContainer">
+            <div class="errorContainer">
               <sapn class="error" id="RegName_err"
                 >please check your phonenumber</sapn
               >
@@ -85,15 +107,15 @@
                 id="RegPhoneNumber"
               />
             </div>
-            <div class="errorContainer" id="ErrorContainer">
-              <sapn class="error" id="Reghone_err"
+            <div class="errorContainer">
+              <sapn class="error" id="RegPhone_err"
                 >please check your phonenumber</sapn
               >
             </div>
             <div class="input-box">
               <input type="email" placeholder="Email" id="RegEmail" />
             </div>
-            <div class="errorContainer" id="ErrorContainer">
+            <div class="errorContainer">
               <sapn class="error" id="RegEmai_err"
                 >please check your phonenumber</sapn
               >
@@ -101,7 +123,7 @@
             <div class="input-box">
               <input type="password" placeholder="Password" id="RegPassword" />
             </div>
-            <div class="errorContainer" id="ErrorContainer">
+            <div class="errorContainer">
               <sapn class="error" id="RegPwd_err"
                 >please check your phonenumber</sapn
               >
@@ -113,13 +135,15 @@
                 id="RegConfirmPassword"
               />
             </div>
-            <div class="errorContainer" id="ErrorContainer">
+            <div class="errorContainer">
               <sapn class="error" id="RegCrfmPwd_err"
                 >please check your phonenumber</sapn
               >
             </div>
-            <button class="btn" id="register_btn">Register</button>
-          </form>
+            <button class="btn" id="register_btn" onclick="registerBtn()">
+              Register
+            </button>
+          </div>
         </div>
       </div>
     </main>

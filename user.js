@@ -1,24 +1,34 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const seats = document.querySelectorAll(".seat");
-  let selectedSeats = 0;
+function showseats() {
+  document.getElementById("seatContiner").style.display = "block";
 
-  seats.forEach((seat) => {
-    seat.addEventListener("click", () => {
-      const seatNumber = seat.dataset.seat;
+  (function () {
+    const seats = document.querySelectorAll(".seat");
+    let selectedSeats = 0;
 
-      if (
-        !seat.classList.contains("selected") &&
-        selectedSeats < 4 &&
-        !seat.classList.contains("booked")
-      ) {
-        seat.classList.add("selected");
-        selectedSeats++;
-        console.log("Seat " + seatNumber + " selected.");
-      } else if (seat.classList.contains("selected")) {
-        seat.classList.remove("selected");
-        selectedSeats--;
-        console.log("Seat " + seatNumber + " unselected.");
-      }
+    seats.forEach((seat) => {
+      seat.addEventListener("click", () => {
+        const seatNumber = seat.dataset.seat;
+
+        if (
+          !seat.classList.contains("selected") &&
+          selectedSeats < 4 &&
+          !seat.classList.contains("booked")
+        ) {
+          seat.classList.add("selected");
+          selectedSeats++;
+          console.log("Seat " + seatNumber + " selected.");
+        } else if (seat.classList.contains("selected")) {
+          seat.classList.remove("selected");
+          selectedSeats--;
+          console.log("Seat " + seatNumber + " unselected.");
+        }
+      });
     });
-  });
-});
+  })();
+}
+
+function closeSeatSelection() {
+  document.getElementById("seatContiner").style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded");

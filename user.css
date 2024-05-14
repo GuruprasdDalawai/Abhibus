@@ -30,11 +30,13 @@
   padding: 30px;
   border: 2px solid;
   border-radius: 15px;
+  display: none;
 }
 
 /* .seatsDispaly {
-  background: green;
+  display: none;
 } */
+
 .seat {
   height: 30px;
   width: 60px;

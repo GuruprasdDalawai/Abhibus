@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="./style.css" />
     <link rel="styleSheet" href="./user.css" />
     <link rel="styleSheet" href="./admin.css" />
+    <script src="./admin.js"></script>
     <title>Abhi bus</title>
   </head>
   <body>
@@ -26,7 +27,6 @@
         </div>
       </div>
     </header>
-
     <main>
       <div id="serchdiv" class="search">
         <div class="Wrapper displayLine" id>
@@ -36,10 +36,15 @@
           <div class="input-box">
             <button type="submit" class="btn">Search</button>
           </div>
+          <div class="input-box">
+            <button type="submit" class="btn" onclick="showBusForm()">
+              Add bus
+            </button>
+          </div>
         </div>
       </div>
 
-      <div id="addBus" class="Wrapper addBus">
+      <div id="showbuse" class="Wrapper addBus" onclick="showUpdateBusform()">
         <div>
           <span>VRL</span>
           <div>KA28HB6886</div>
@@ -120,44 +125,123 @@
         </div>
       </div>
       <div id="addnewbus" class="addnewbus">
+        <button class="clsoeBtn" id="RegClose" onclick="closeBusForm()">
+          X
+        </button>
         <h1>Add new Bus</h1>
         <form>
-          <div class="input-box">
-            <span>Busno</span>
-            <input type="text" placeholder="kA01GD0001" />
+          <div>
+            <div class="input-box">
+              <span>Busno</span>
+              <input type="text" placeholder="kA01GD0001" id="addbusNo" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusNo_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Source</span>
-            <input type="text" placeholder="Bengaluru" />
+          <div>
+            <div class="input-box">
+              <span>Source</span>
+              <input type="text" placeholder="Bengaluru" id="addbusSource" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusSource_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Destination </span>
-            <input type="text" placeholder="Mysore" />
+          <div>
+            <div class="input-box">
+              <span>Destination </span>
+              <input type="text" placeholder="Mysore" id="addbusDestination" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusDestination_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Depeart Time</span>
-            <input type="datetime-local" />
+          <div>
+            <div class="input-box">
+              <span>Depearture Time</span>
+              <input type="datetime-local" id="addbusDepartureTime" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusDepartureTime_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Arrival Time</span>
-            <input type="datetime-local" />
+          <div>
+            <div class="input-box">
+              <span>Arrival Time</span>
+              <input type="datetime-local" id="addbusArrivalTime" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusArrivalTime_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Seats</span>
-            <input type="number" placeholder="22" value="22" />
+          <div>
+            <div class="input-box">
+              <span>Seats</span>
+              <input
+                type="number"
+                placeholder="22"
+                value="42"
+                id="addbusSeats"
+              />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusSeats_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <span>Fare</span>
-            <input type="number" placeholder="₹" />
+          <div>
+            <div class="input-box">
+              <span>Fare</span>
+              <input type="number" placeholder="₹" id="addbusfare" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbusfare_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
+          </div>
+          <div>
+            <div class="input-box">
+              <span>Name of company</span>
+              <input
+                type="text"
+                placeholder="company name"
+                id="addbuscompany"
+              />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="addbuscompany_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
         </form>
         <div class="float-right">
           <div class="btn-group">
-            <button class="btn">AddBus</button>
+            <button class="btn" onclick="addNewBus()">AddBus</button>
           </div>
         </div>
       </div>
       <div id="update" class="addnewbus">
+        <button
+          class="clsoeBtn"
+          id="updateClose"
+          onclick="closeUpdateBusForm()"
+        >
+          X
+        </button>
         <h1>update/remove Bus</h1>
         <form>
           <div class="input-box">
