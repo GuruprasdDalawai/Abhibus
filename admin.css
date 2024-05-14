@@ -15,7 +15,7 @@
 .addnewbus {
   top: 50px;
   left: 20%;
-  display: block;
+  display: none;
   position: absolute;
   /* background-color: yellow; */
   text-align: center;

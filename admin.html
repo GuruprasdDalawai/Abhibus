@@ -28,13 +28,20 @@
       </div>
     </header>
     <main>
-      <div id="serchdiv" class="search">
+      <div id="serchdiv" class="search2">
         <div class="Wrapper displayLine" id>
           <div class="input-box">
-            <input type="text" placeholder="Bybus no/ companyName" />
+            <input
+              type="text"
+              placeholder="Bybus no/ companyName"
+              id="searchInput"
+              onkeyup="searchkey()"
+            />
           </div>
           <div class="input-box">
-            <button type="submit" class="btn">Search</button>
+            <button type="submit" class="btn" onclick="searchBuses()">
+              Search
+            </button>
           </div>
           <div class="input-box">
             <button type="submit" class="btn" onclick="showBusForm()">
@@ -44,7 +51,7 @@
         </div>
       </div>
 
-      <div id="showbuse" class="Wrapper addBus" onclick="showUpdateBusform()">
+      <!-- <div id="showbuse" class="Wrapper addBus" onclick="showUpdateBusform()">
         <div>
           <span>VRL</span>
           <div>KA28HB6886</div>
@@ -63,67 +70,9 @@
           <span>₹800 </span>
           <span>3 seats Available</span>
         </div>
-      </div>
-      <div id="addBus" class="Wrapper addBus">
-        <div>
-          <span>VRL</span>
-          <div>KA28HB6886</div>
-        </div>
-        <div>
-          <span>Vijayapura</span>
-          <span>24-05-2024</span>
-          <span>20:45</span>
-        </div>
-        <div>
-          <spen>Bengaluru</spen>
-          <span>23-05-2024</span>
-          <spen>06:45</spen>
-        </div>
-        <div class="">
-          <span>₹800 </span>
-          <span>3 seats Available</span>
-        </div>
-      </div>
-      <div id="addBus" class="Wrapper addBus">
-        <div>
-          <span>VRL</span>
-          <div>KA28HB6886</div>
-        </div>
-        <div>
-          <span>Vijayapura</span>
-          <span>24-05-2024</span>
-          <span>20:45</span>
-        </div>
-        <div>
-          <spen>Bengaluru</spen>
-          <span>23-05-2024</span>
-          <spen>06:45</spen>
-        </div>
-        <div class="">
-          <span>₹800 </span>
-          <span>3 seats Available</span>
-        </div>
-      </div>
-      <div id="addBus" class="Wrapper addBus">
-        <div>
-          <span>VRL</span>
-          <div>KA28HB6886</div>
-        </div>
-        <div>
-          <span>Vijayapura</span>
-          <span>24-05-2024</span>
-          <span>20:45</span>
-        </div>
-        <div>
-          <spen>Bengaluru</spen>
-          <span>23-05-2024</span>
-          <spen>06:45</spen>
-        </div>
-        <div class="">
-          <span>₹800 </span>
-          <span>3 seats Available</span>
-        </div>
-      </div>
+      </div> -->
+
+      <div id="displayContiner"></div>
       <div id="addnewbus" class="addnewbus">
         <button class="clsoeBtn" id="RegClose" onclick="closeBusForm()">
           X
@@ -246,37 +195,45 @@
         <form>
           <div class="input-box">
             <span>Busno</span>
-            <input type="text" placeholder="kA01GD0001" />
+            <input type="text" placeholder="kA01GD0001" id="updateBusno" />
           </div>
           <div class="input-box">
             <span>Source</span>
-            <input type="text" placeholder="Bengaluru" />
+            <input type="text" placeholder="Bengaluru" id="updateSource" />
           </div>
           <div class="input-box">
             <span>Destination </span>
-            <input type="text" placeholder="Mysore" />
+            <input type="text" placeholder="Mysore" id="updateDeestination" />
           </div>
           <div class="input-box">
             <span>Departure Time</span>
-            <input type="datetime-local" />
+            <input type="datetime-local" id="updateDeparuteTime" />
           </div>
           <div class="input-box">
             <span>Arrival Time</span>
-            <input type="datetime-local" />
+            <input type="datetime-local" id="updateArrivalTime" />
           </div>
           <div class="input-box">
             <span>Seats</span>
-            <input type="number" placeholder="22" value="22" />
+            <input type="number" placeholder="42" value="42" id="updateSeat" />
           </div>
           <div class="input-box">
             <span>Fare</span>
-            <input type="number" placeholder="₹" />
+            <input type="number" placeholder="₹" id="updateFare" />
+          </div>
+          <div class="input-box">
+            <span>comapant</span>
+            <input type="text" placeholder="company" id="updateCompany" />
           </div>
         </form>
         <div class="float-right">
           <div class="btn-group">
-            <button class="btn">Update</button>
-            <button class="btn">DELETE</button>
+            <button class="btn" id="updatebtn" onclick="updateBus(this)">
+              Update
+            </button>
+            <button class="btn" id="deleteBtn" onclick="deleteBus(this)">
+              DELETE
+            </button>
           </div>
         </div>
       </div>

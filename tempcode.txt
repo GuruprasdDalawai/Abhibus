@@ -253,3 +253,13 @@ function restErr(elemntID) {
 //     }
 //   }
 // };
+
+
+console.log(addbusNumber);
+    console.log(addbusSource);
+    console.log(addbusDestination);
+    console.log(addbusDepartureTime);
+    console.log(addbusArrivalTime);
+    console.log(addbusSeats);
+    console.log(addbusfare);
+    console.log(addbuscompany);

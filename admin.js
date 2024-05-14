@@ -1,4 +1,4 @@
-function showBusForm() {
+function showBusForm(event) {
   document.getElementById("addnewbus").style.display = "block";
 }
 
@@ -6,12 +6,57 @@ function closeBusForm() {
   document.getElementById("addnewbus").style.display = "none";
 }
 
-function showUpdateBusform() {
+function showUpdateBusform(element) {
   document.getElementById("update").style.display = "block";
+  setValuesToUpdade(element.dataset.set);
 }
 
 function closeUpdateBusForm() {
   document.getElementById("update").style.display = "none";
+}
+
+function setValuesToUpdade(id) {
+  let buslist = JSON.parse(localStorage.getItem("buslist"));
+  console.log(buslist);
+  let res = buslist.filter((obj) => obj.id === id);
+  if (res.length) {
+    let obj = res[0];
+    document.getElementById("updateBusno").value = obj.busNumber;
+    document.getElementById("updateSource").value = obj.source;
+    document.getElementById("updateDeestination").value = obj.destination;
+    let d_dt = new Date(obj.departureDateTime);
+    const departurTimeset =
+      d_dt.getFullYear() +
+      "-" +
+      String(d_dt.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(d_dt.getDate()).padStart(2, "0") +
+      "T" +
+      String(d_dt.getHours()).padStart(2, "0") +
+      ":" +
+      String(d_dt.getMinutes()).padStart(2, "0");
+
+    let a_dt = new Date(obj.ArrivalDateTime);
+    const arrivalTimeset =
+      a_dt.getFullYear() +
+      "-" +
+      String(a_dt.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(a_dt.getDate()).padStart(2, "0") +
+      "T" +
+      String(a_dt.getHours()).padStart(2, "0") +
+      ":" +
+      String(a_dt.getMinutes()).padStart(2, "0");
+
+    document.getElementById("updateDeparuteTime").value = departurTimeset;
+    document.getElementById("updateArrivalTime").value = arrivalTimeset;
+    document.getElementById("updateSeat").value = obj.freeSeats;
+    document.getElementById("updateFare").value = obj.fare;
+    document.getElementById("updateCompany").value = obj.company;
+
+    document.getElementById("updatebtn").dataset.id = obj.id;
+    document.getElementById("deleteBtn").dataset.id = obj.id;
+  }
 }
 
 function addNewBus() {
@@ -69,20 +114,9 @@ function addNewBus() {
     } else {
       restErr("addbuscompany_err");
     }
-
-    console.log(addbusNumber);
-    console.log(addbusSource);
-    console.log(addbusDestination);
-    console.log(addbusDepartureTime);
-    console.log(addbusArrivalTime);
-    console.log(addbusSeats);
-    console.log(addbusfare);
-    console.log(addbuscompany);
-
     let buslist = [];
     if (localStorage.getItem("buslist") !== null) {
-      buslist = localStorage.getItem("buslist");
-      buslist = [...buslist];
+      buslist = JSON.parse(localStorage.getItem("buslist"));
     }
     buslist.push({
       busNumber: addbusNumber,
@@ -95,19 +129,6 @@ function addNewBus() {
       company: addbuscompany,
     });
     localStorage.setItem("buslist", JSON.stringify(buslist));
-
-    // let buslist = []; //localStorage.getItem("buslist");
-    // if (localStorage.getItem("buslist") !== null) {
-    //   buslist = localStorage.getItem("buslist");
-    //   buslist=[...buslist]
-    //   buslist.filter(obj=>{
-    // let departureTime = new Date(obj.departureTime);
-    // let arrivalTime = new Date(obj.arrivalTime);
-    // let chekingDepatureTime = new Date(addbusDepartureTime);
-    // let ChekingArivalTime = new Date(addbusArrivalTime);
-    //      if (obj.buNumber==addbusNumber && departureTime>=chekingDepatureTime)
-    //   })
-    // }
   } catch (e) {
     console.log(e);
   }
@@ -183,4 +204,124 @@ function displayErr(message, elemntID) {
 function restErr(elemntID) {
   let elemnt = document.getElementById(elemntID);
   elemnt.parentElement.style.display = "none";
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  if (localStorage.getItem("buslist") !== null) {
+    let buslist = JSON.parse(localStorage.getItem("buslist"));
+    buslist.forEach(displayContentBoy);
+  }
+});
+
+function searchkey() {
+  searchBuses();
+}
+
+function searchBuses() {
+  let seachText = document.getElementById("searchInput").value;
+  let filterArr;
+  if (seachText) {
+    let buslist = [];
+    if (localStorage.getItem("buslist") !== null) {
+      buslist = JSON.parse(localStorage.getItem("buslist"));
+      filterArr = buslist.filter((obj) => {
+        let comany = obj.company.toLowerCase();
+        let busno = obj.busNumber.toLowerCase();
+        seachText.toLowerCase();
+        if (
+          comany.includes(seachText.toLowerCase()) ||
+          busno.includes(seachText.toLowerCase())
+        ) {
+          return obj;
+        }
+      });
+      document.getElementById("displayContiner").innerHTML = "";
+
+      filterArr.forEach(displayContentBoy);
+    }
+  } else {
+    buslist = JSON.parse(localStorage.getItem("buslist"));
+    document.getElementById("displayContiner").innerHTML = "";
+    buslist.forEach(displayContentBoy);
+  }
+}
+
+function displayContentBoy(obj) {
+  let d_dt = new Date(obj.departureDateTime);
+  let date_dtStr =
+    d_dt.getDate() + "/" + (d_dt.getMonth() + 1) + "/" + d_dt.getFullYear();
+  let time_dtStr = d_dt.getHours() + ":" + d_dt.getMinutes();
+
+  let a_dt = new Date(obj.ArrivalDateTime);
+  let date_atStr =
+    a_dt.getDate() + "/" + (a_dt.getMonth() + 1) + "/" + a_dt.getFullYear();
+  let time_atStr = a_dt.getHours() + ":" + a_dt.getMinutes();
+
+  document.getElementById("displayContiner").insertAdjacentHTML(
+    "beforeend",
+    `<div  class="Wrapper addBus"  data-set="${obj.id}" onclick="showUpdateBusform(this)">
+          <div>
+            <span>${obj.company}</span>
+            <div>${obj.busNumber}</div>
+          </div>
+          <div>
+            <span>${obj.source}</span>
+            <span>${date_dtStr}</span>
+            <span>${time_dtStr}</span>
+          </div>
+          <div>
+            <spen>${obj.destination}</spen>
+            <span>${date_atStr}</span>
+            <span>${time_atStr}</span>
+          </div>
+          <div class="">
+            <span>₹${obj.fare} </span>
+
+            <span>${obj.freeSeats} seats Available</span>
+          </div>
+          </div>`
+  );
+}
+
+function updateBus(element) {
+  let id = element.dataset.id;
+  let updateBusno = document.getElementById("updateBusno").value;
+  let updateSource = document.getElementById("updateSource").value;
+  let updateDeestination = document.getElementById("updateDeestination").value;
+  let updateDeparuteTime = document.getElementById("updateDeparuteTime").value;
+  let updateArrivalTime = document.getElementById("updateArrivalTime").value;
+  let updateSeat = document.getElementById("updateSeat").value;
+  let updateFare = document.getElementById("updateFare").value;
+  let updateCompany = document.getElementById("updateCompany").value;
+
+  let buslist = [];
+  if (localStorage.getItem("buslist") !== null) {
+    buslist = JSON.parse(localStorage.getItem("buslist"));
+    buslist.forEach((obj) => {
+      if (obj.id === id) {
+        obj.busNumber = updateBusno;
+        obj.source = updateSource;
+        obj.destination = updateDeestination;
+        obj.departureDateTime = updateDeparuteTime;
+        obj.ArrivalDateTime = updateArrivalTime;
+        obj.freeSeats = updateSeat;
+        obj.fare = updateFare;
+        obj.company = updateCompany;
+      }
+    });
+    document.getElementById("displayContiner").innerHTML = "";
+    buslist.forEach(displayContentBoy);
+    localStorage.setItem("buslist", JSON.stringify(buslist));
+    document.getElementById("update").style.display = "none";
+  }
+}
+
+function deleteBus(element) {
+  let id = element.dataset.id;
+  buslist = JSON.parse(localStorage.getItem("buslist"));
+  let removedlist = buslist.filter((obj) => obj.id !== id);
+  document.getElementById("displayContiner").innerHTML = "";
+  removedlist.forEach(displayContentBoy);
+  localStorage.setItem("buslist", JSON.stringify(removedlist));
+  document.getElementById("update").style.display = "none";
 }
