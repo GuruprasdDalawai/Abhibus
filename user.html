@@ -21,6 +21,9 @@
         <div class="poppins-extrabold logoFontSize display-inlineblock">
           <span class="logColor">Abhi</span>bus
         </div>
+        <button class="float-right btn" onclick="showBookedTikets()">
+          Tickets
+        </button>
         <div class="float-right user-detail">
           <span id="Username"> Username </span>
           <span class="float-right">Logout</span>
@@ -32,21 +35,23 @@
       <div id="serchdiv" class="search">
         <div class="Wrapper displayLine" id>
           <div class="input-box">
-            <input type="text" placeholder="From" />
+            <input type="text" placeholder="From" id="txtSearchFrom" />
           </div>
           <div class="input-box">
-            <input type="text" placeholder="To" />
+            <input type="text" placeholder="To" id="txtSearchTo" />
           </div>
           <div class="input-box">
-            <input type="date" />
+            <input type="date" id="SearchDate" />
           </div>
           <div class="input-box">
-            <button type="submit" class="btn">Search</button>
+            <button type="submit" class="btn" onclick="searchBuses()">
+              Search
+            </button>
           </div>
         </div>
       </div>
       <div id="displayContent"></div>
-      <div id="addBus" class="Wrapper addBus">
+      <!-- <div id="addBus" class="Wrapper addBus">
         <div>
           <span>VRL</span>
           <div>KA28HB6886</div>
@@ -87,7 +92,7 @@
           <span>3 seats Available</span>
           <button class="btn">Book</button>
         </div>
-      </div>
+      </div> -->
 
       <div class="book Wrapper" id="seatContiner">
         <button
@@ -113,7 +118,7 @@
             <table>
               <tr>
                 <td>
-                  <div class="seat booked female" data-seat="U1">
+                  <div class="seat" data-seat="U1">
                     U1
                     <div class="pillow"></div>
                   </div>
@@ -409,8 +414,74 @@
               </tr>
             </table>
           </div>
-          <button class="btn float-right">Book now</button>
+          <button
+            class="btn float-right"
+            id="btnBookSets"
+            onclick="showPassangerpage(this)"
+          >
+            Proceed
+          </button>
         </div>
+      </div>
+      <div class="book Wrapper" id="passngerDetails">
+        <button class="clsoeBtn" onclick="test()">X</button>
+        <h1>Passanger Details</h1>
+        <div id="passngerListinput"></div>
+        <button class="btn" id="btbgoforPayment" onclick="goForPayment(this)">
+          Go Payment
+        </button>
+      </div>
+      <div class="book Wrapper" id="paymentContainer">
+        <button class="clsoeBtn" onclick="test()">X</button>
+        <h1>Payment Modes</h1>
+        <div class="paymentcardConent" id="paymentCardContiner">
+          <div class="input-box">
+            <input type="number" id="CardNumber" placeholder="Cardnumber" />
+          </div>
+          <div class="input-box">
+            <input type="text" placeholder="mm/yyyy" />
+          </div>
+          <div class="input-box">
+            <input type="password" id="cvv" placeholder="cvv" />
+          </div>
+          <button id="btnCardPaymnet" class="btn" onclick="paynow(this)">
+            Paynow
+          </button>
+        </div>
+        <div class="paymentVirtuleConent" id="paymentVirtuleContiner">
+          <div class="input-box">
+            <input type="number" id="virtualID" placeholder="Virtua1 id" />
+          </div>
+          <button id="btnVirtualPaymnet" class="btn" onclick="paynow(this)">
+            Paynow
+          </button>
+        </div>
+      </div>
+
+      <div class="book Wrapper" id="ticketdetails">
+        <div><h3>Your ticket booked</h3></div>
+        <h4>Tcket details</h4>
+        <table>
+          <tr>
+            <td>PNR</td>
+            <td><span id="pnrNumber"></span></td>
+          </tr>
+          <tr>
+            <td><span id="passanger1"></span></td>
+          </tr>
+          <tr>
+            <td><span id="passanger2"></span></td>
+          </tr>
+          <tr>
+            <td><span id="passanger3"></span></td>
+          </tr>
+          <tr>
+            <td><span id="passanger4"></span></td>
+          </tr>
+        </table>
+      </div>
+      <div id="ticketlist" class="book Wrapper">
+        <h1>working</h1>
       </div>
     </main>
     <footer></footer>

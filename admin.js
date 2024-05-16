@@ -17,7 +17,6 @@ function closeUpdateBusForm() {
 
 function setValuesToUpdade(id) {
   let buslist = JSON.parse(localStorage.getItem("buslist"));
-  console.log(buslist);
   let res = buslist.filter((obj) => obj.id === id);
   if (res.length) {
     let obj = res[0];
@@ -118,17 +117,23 @@ function addNewBus() {
     if (localStorage.getItem("buslist") !== null) {
       buslist = JSON.parse(localStorage.getItem("buslist"));
     }
+
+    let busID = generateID_bus();
     buslist.push({
-      busNumber: addbusNumber,
-      source: addbusSource,
-      destination: addbusDestination,
+      id: busID,
+      busNumber: addbusNumber.toUpperCase(),
+      source: addbusSource.toUpperCase(),
+      destination: addbusDestination.toUpperCase(),
       departureDateTime: addbusDepartureTime,
       ArrivalDateTime: addbusArrivalTime,
       freeSeats: addbusSeats,
       fare: addbusfare,
       company: addbuscompany,
+      bookedSeats: [],
     });
     localStorage.setItem("buslist", JSON.stringify(buslist));
+    buslist.forEach(displayContentBoy);
+    document.getElementById("addnewbus").style.display = "none";
   } catch (e) {
     console.log(e);
   }
@@ -209,6 +214,7 @@ function restErr(elemntID) {
 document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("buslist") !== null) {
     let buslist = JSON.parse(localStorage.getItem("buslist"));
+    document.getElementById("displayContiner").innerHTML = "";
     buslist.forEach(displayContentBoy);
   }
 });
@@ -236,7 +242,6 @@ function searchBuses() {
         }
       });
       document.getElementById("displayContiner").innerHTML = "";
-
       filterArr.forEach(displayContentBoy);
     }
   } else {
@@ -249,13 +254,19 @@ function searchBuses() {
 function displayContentBoy(obj) {
   let d_dt = new Date(obj.departureDateTime);
   let date_dtStr =
-    d_dt.getDate() + "/" + (d_dt.getMonth() + 1) + "/" + d_dt.getFullYear();
-  let time_dtStr = d_dt.getHours() + ":" + d_dt.getMinutes();
+    d_dt.getDate() + "-" + (d_dt.getMonth() + 1) + "-" + d_dt.getFullYear();
+  let time_dtStr =
+    String(d_dt.getHours()).padStart(2, "0") +
+    ":" +
+    String(d_dt.getMinutes()).padStart(2, "0");
 
   let a_dt = new Date(obj.ArrivalDateTime);
   let date_atStr =
-    a_dt.getDate() + "/" + (a_dt.getMonth() + 1) + "/" + a_dt.getFullYear();
-  let time_atStr = a_dt.getHours() + ":" + a_dt.getMinutes();
+    a_dt.getDate() + "-" + (a_dt.getMonth() + 1) + "-" + a_dt.getFullYear();
+  let time_atStr =
+    String(a_dt.getHours()).padStart(2, "0") +
+    ":" +
+    String(a_dt.getMinutes()).padStart(2, "0");
 
   document.getElementById("displayContiner").insertAdjacentHTML(
     "beforeend",
@@ -324,4 +335,13 @@ function deleteBus(element) {
   removedlist.forEach(displayContentBoy);
   localStorage.setItem("buslist", JSON.stringify(removedlist));
   document.getElementById("update").style.display = "none";
+}
+
+function generateID_bus() {
+  try {
+    return "B_" + Math.floor(new Date().getTime() / 1000);
+  } catch (e) {
+    console.error("Error in generating ID:", e);
+    return null;
+  }
 }

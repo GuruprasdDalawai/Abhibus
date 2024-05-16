@@ -20,61 +20,73 @@ function registerBtn() {
 
     if (!validateName(reg_name)) {
       displayErr("Invalid Name", "RegName_err");
-      return;
     } else {
       restErr("RegName_err");
     }
 
     if (!validatePhoneNumber(reg_phoneNumber)) {
       displayErr("Invalid Phone Number", "RegPhone_err");
-      return;
     } else {
       restErr("RegPhone_err");
     }
     if (!ValidateEmail(reg_email)) {
       displayErr("Invalid Email id", "RegEmai_err");
-      return;
     } else {
       restErr("RegEmai_err");
     }
     if (!validatePassword(reg_password)) {
       displayErr("Invalid invalid password", "RegPwd_err");
-      return;
     } else {
       restErr("RegPwd_err");
     }
-    if (reg_password !== reg_crmPwd) {
-      console(reg_password, reg_crmPwd_err);
-      displayErr("Password did not match", "RegCrfmPwd_err");
-      return;
+
+    if (!validatePassword(reg_crmPwd)) {
+      displayErr("Invalid invalid password", "RegCrfmPwd_err");
     } else {
       restErr("RegCrfmPwd_err");
     }
 
-    let reg_list = [];
-
-    if (localStorage.getItem("reglist") !== null) {
-      reg_list = JSON.parse(localStorage.getItem("reglist"));
-      reg_list = [...reg_list];
-      if (
-        reg_list.filter((obj) => obj.mobileNumber === reg_phoneNumber).length >
-        0
-      ) {
-        displayErr("This phone Number is already registered", "RegPhone_err");
+    if (
+      validateName(reg_name) &&
+      validatePhoneNumber(reg_phoneNumber) &&
+      ValidateEmail(reg_email) &&
+      validatePassword(reg_password) &&
+      validatePassword(reg_crmPwd)
+    ) {
+      if (reg_password !== reg_crmPwd) {
+        console(reg_password, reg_crmPwd_err);
+        displayErr("Password did not match", "RegCrfmPwd_err");
         return;
+      } else {
+        restErr("RegCrfmPwd_err");
       }
-    }
-    reg_list.push({
-      name: reg_name,
-      mobileNumber: reg_phoneNumber,
-      email: reg_email,
-      password: reg_password,
-    });
 
-    localStorage.setItem("reglist", JSON.stringify(reg_list));
-    localStorage.setItem("isLogin", reg_phoneNumber);
-    location.href = "./user.html";
-    conseol.log("completed");
+      let reg_list = [];
+
+      if (localStorage.getItem("reglist") !== null) {
+        reg_list = JSON.parse(localStorage.getItem("reglist"));
+        reg_list = [...reg_list];
+        if (
+          reg_list.filter((obj) => obj.mobileNumber === reg_phoneNumber)
+            .length > 0
+        ) {
+          displayErr("This phone Number is already registered", "RegPhone_err");
+          return;
+        }
+      }
+      reg_list.push({
+        name: reg_name,
+        mobileNumber: reg_phoneNumber,
+        email: reg_email,
+        password: reg_password,
+      });
+      localStorage.setItem("reglist", JSON.stringify(reg_list));
+      localStorage.setItem("isLogin", reg_phoneNumber);
+      // document.getElementById("RegisterContainer").style.display = "none";
+      // document.getElementById("LoginContainer").style.display = "block";
+      location.reload();
+      console.log("completed");
+    }
   } catch (e) {
     console.log(e);
   }
@@ -86,6 +98,7 @@ function regClose() {
 }
 
 function validateName(name) {
+  if (!name) return false;
   var regex = /^[a-zA-Z]+$/;
   if (!regex.test(name)) {
     return false;
@@ -94,11 +107,11 @@ function validateName(name) {
   }
 }
 
-function validatePhoneNumber(phoneNum) {
-  if (phoneNum.length > 6 && phoneNum.length < 11) {
-    return true;
-  }
-  return false;
+function validatePhoneNumber(number) {
+  if (typeof number !== "string") return false;
+  if (number.length !== 10) return false;
+  if (!/^[6-9]\d{9}$/.test(number)) return false;
+  return true;
 }
 
 function ValidateEmail(email) {
@@ -109,20 +122,20 @@ function ValidateEmail(email) {
 }
 
 function validatePassword(pwd) {
-  if (pwd !== "" && pwd !== undefined && pwd !== "") {
-    return true;
+  if (pwd == "" || pwd == undefined || pwd == null) {
+    return false;
   }
-  return false;
+  return true;
 }
 function displayErr(message, elemntID) {
   let elemnt = document.getElementById(elemntID);
   elemnt.textContent = message;
-  elemnt.parentElement.style.display = "block";
+  elemnt.style.visibility = "visible";
 }
 
 function restErr(elemntID) {
   let elemnt = document.getElementById(elemntID);
-  elemnt.parentElement.style.display = "none";
+  elemnt.style.visibility = "hidden";
 }
 
 function Resetments() {
@@ -140,55 +153,56 @@ function loginBtn() {
 
     if (!validatePhoneNumber(login_phonenumber)) {
       displayErr("Invalid Phone Number", "phone_err");
-      return;
     } else {
       restErr("phone_err");
     }
 
-    console.log("starting ");
-    // if (!validatePassword(reg_password)) {
-    //   console.log("working dddeeee");
-    //   displayErr("Invalid invalid password", "pwd_err");
-    //   return;
-    // } else {
-    //   console.log("working reseterr");
-    //   restErr("pwd_err");
-    // }
-
-    let reg_list = [];
-
-    console.log(login_phonenumber, login_password);
-
-    if (login_phonenumber == "1234567890" && login_password === "admin") {
-      console.log(" adminlogin");
-      location.href = "./admin.html";
-      return;
-    }
-
-    console.log("user seaarch starts");
-
-    if (localStorage.getItem("reglist") !== null) {
-      reg_list = JSON.parse(localStorage.getItem("reglist"));
-      reg_list = [...reg_list];
-      let res = reg_list.filter(
-        (obj) => obj.mobileNumber === login_phonenumber
-      );
-      if (res.length == 0) {
-        displayErr("Invalid PhoneNumber", "phone_err");
-        return;
-      } else {
-        if (res[0].password === login_password) {
-          console.log("you successfully loged in");
-          location.href = "./user.html";
-        } else {
-          displayErr("Invalid password", "pwd_err");
-        }
-      }
+    if (!validatePassword(login_password)) {
+      displayErr("Invalid invalid password", "pwd_err");
     } else {
-      alert("no localstorage");
+      restErr("pwd_err");
     }
-    reg_list = console.log(login_phonenumber, login_password);
+
+    if (
+      validatePhoneNumber(login_phonenumber) &&
+      validatePassword(login_password)
+    ) {
+      let reg_list = [];
+
+      console.log(login_phonenumber, login_password);
+
+      if (login_phonenumber == "9611796790" && login_password === "admin") {
+        console.log(" adminlogin");
+        location.href = "./admin.html";
+        return;
+      }
+
+      console.log("user seaarch starts");
+
+      if (localStorage.getItem("reglist") !== null) {
+        reg_list = JSON.parse(localStorage.getItem("reglist"));
+        reg_list = [...reg_list];
+        let res = reg_list.filter(
+          (obj) => obj.mobileNumber === login_phonenumber
+        );
+        if (res.length == 0) {
+          displayErr("Invalid PhoneNumber", "phone_err");
+          return;
+        } else {
+          if (res[0].password === login_password) {
+            console.log("you successfully loged in");
+            location.href = "./user.html";
+          } else {
+            displayErr("Invalid password", "pwd_err");
+          }
+        }
+      } else {
+        alert("no localstorage");
+      }
+    }
+    document.getElementById("login_phonenumber").value = "";
+    document.getElementById("login_password").value = "";
   } catch (e) {
-    conseol.log(e);
+    console.log(e);
   }
 }
