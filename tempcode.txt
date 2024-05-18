@@ -263,3 +263,69 @@ console.log(addbusNumber);
     console.log(addbusSeats);
     console.log(addbusfare);
     console.log(addbuscompany);
+
+
+
+    // let pnr = element.dataset.pnr;
+  // let bookedTicket = [];
+  // if (localStorage.getItem("bookedTicket") !== null) {
+  //   bookedTicket = JSON.parse(localStorage.getItem("bookedTicket"));
+  //   let filterTiket = bookedTicket.filter((obj) => obj.pnr === pnr);
+  //   let updateTikets = bookedTicket.filter((obj) => obj.pnr !== pnr);
+  //   let tciketObj = filterTiket[0];
+  //   let buslist = JSON.parse(localStorage.getItem("buslist"));
+  //   buslist.forEach((obj) => {
+  //     if (obj.id === tciketObj.busid) {
+  //       let mainArybooked = obj.bookedSeats;
+  //       let removingAryBooked = tciketObj.seats;
+  //       obj.bookedSeats = mainary.filter(
+  //         (item) => !removingAryBooked.includes(item)
+  //       );
+  //     }
+  //   });
+  //   localStorage.setItem("buslist", JSON.stringify(buslist));
+  //   localStorage.setItem("bookedTicket", JSON.stringify(updateTikets));
+  // }
+
+
+  // Function to calculate the time difference between two dates
+function getTimeDifference(date1, date2) {
+    // Ensure the dates are valid Date objects
+    const d1 = new Date(date1);
+    const d2 = new Date(date2);
+
+    if (isNaN(d1) || isNaN(d2)) {
+        throw new Error("Invalid date format");
+    }
+
+    // Calculate the time difference in milliseconds
+    const timeDifference = Math.abs(d2 - d1);
+
+    // Convert time difference to different units
+    const milliseconds = timeDifference;
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(timeDifference / (1000 * 60));
+    const hours = Math.floor(timeDifference / (1000 * 60 * 60));
+    const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+
+    return {
+        milliseconds,
+        seconds,
+        minutes,
+        hours,
+        days
+    };
+}
+
+// Example usage
+const date1 = '2023-05-17T12:00:00Z';
+const date2 = '2023-05-17T15:30:00Z';
+
+const difference = getTimeDifference(date1, date2);
+
+console.log(`Time difference:
+Milliseconds: ${difference.milliseconds}
+Seconds: ${difference.seconds}
+Minutes: ${difference.minutes}
+Hours: ${difference.hours}
+Days: ${difference.days}`);

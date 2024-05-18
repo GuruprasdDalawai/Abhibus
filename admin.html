@@ -3,15 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="./style.css" />
     <link rel="styleSheet" href="./user.css" />
     <link rel="styleSheet" href="./admin.css" />
+    <script src="./disableBackButton.js"></script>
     <script src="./admin.js"></script>
     <title>Abhi bus</title>
   </head>
@@ -21,9 +24,44 @@
         <div class="poppins-extrabold logoFontSize display-inlineblock">
           <span class="logColor">Abhi</span>bus
         </div>
+        <div
+          style="
+            display: inline-block;
+            /* background-color: yellow; */
+            align-content: center;
+            cursor: pointer;
+            align-content: center;
+            margin-top: 5px;
+            margin-bottom: auto;
+          "
+          id="notificationDiv"
+          onclick="ShowNoficationDetails()"
+        >
+          <sapn class="numbernotification" id="numbernotification"></sapn>
+          <script>
+            setInterval(() => {
+              let list = JSON.parse(localStorage.getItem("adminNotification"));
+              // alert(list.length);
+              if (list.length > 0) {
+                document.getElementById("numbernotification").innerHTML =
+                  list.length;
+              } else {
+                document.getElementById("numbernotification").innerHTML = "";
+              }
+            }, 5000);
+          </script>
+          <span>
+            <box-icon name="envelope" id="notoficationShow"></box-icon
+          ></span>
+        </div>
+
         <div class="float-right user-detail">
-          <span id="Username"> Username </span>
-          <span class="float-right">Logout</span>
+          <span
+            class="float-right"
+            style="color: red; cursor: pointer"
+            onclick="adminLogout();"
+            >Logout</span
+          >
         </div>
       </div>
     </header>
@@ -93,7 +131,14 @@
           <div>
             <div class="input-box">
               <span>Source</span>
-              <input type="text" placeholder="Bengaluru" id="addbusSource" />
+              <select id="addbusSource" onchange="updateDestinationOptions()">
+                <option value="">Select</option>
+                <option value="Bengaluru">Bengaluru</option>
+                <option value="Hyderabad">Hyderabad</option>
+                <option value="Mumbai">Mumbai</option>
+                <option value="Channai">Channai</option>
+              </select>
+              <!-- <input type="text" placeholder="Bengaluru" id="addbusSource" /> -->
             </div>
             <div class="errorContainer">
               <sapn class="error" id="addbusSource_err"
@@ -104,7 +149,8 @@
           <div>
             <div class="input-box">
               <span>Destination </span>
-              <input type="text" placeholder="Mysore" id="addbusDestination" />
+              <select id="addbusDestination"></select>
+              <!-- <input type="text" placeholder="Mysore" id="addbusDestination" /> -->
             </div>
             <div class="errorContainer">
               <sapn class="error" id="addbusDestination_err"
@@ -142,6 +188,7 @@
                 placeholder="22"
                 value="42"
                 id="addbusSeats"
+                readonly
               />
             </div>
             <div class="errorContainer">
@@ -215,14 +262,20 @@
           </div>
           <div class="input-box">
             <span>Seats</span>
-            <input type="number" placeholder="42" value="42" id="updateSeat" />
+            <input
+              type="number"
+              placeholder="42"
+              value="42"
+              id="updateSeat"
+              readonly
+            />
           </div>
           <div class="input-box">
             <span>Fare</span>
             <input type="number" placeholder="₹" id="updateFare" />
           </div>
           <div class="input-box">
-            <span>comapant</span>
+            <span>comapany</span>
             <input type="text" placeholder="company" id="updateCompany" />
           </div>
         </form>
@@ -237,7 +290,48 @@
           </div>
         </div>
       </div>
+      <div class="notificationConatiner" id="notificationConatiner">
+        <button
+          class="containerclsoeBtn"
+          id="updateClose"
+          onclick="closeNotification()"
+        >
+          X
+        </button>
+        <div class="noficationcontent" id="addNotification">
+          <table id="addNotificationTbl">
+            <tr>
+              <td>PNR</td>
+              <td>Mobile</td>
+              <td>seats</td>
+              <td>Status</td>
+            </tr>
+          </table>
+        </div>
+      </div>
     </main>
     <footer></footer>
+
+    <script>
+      const addbusDepartureTime = document.getElementById(
+        "addbusDepartureTime"
+      );
+      const addbusArrivalTime = document.getElementById("addbusArrivalTime");
+      const today = new Date().toISOString().slice(0, 16); // Remove milliseconds
+      addbusDepartureTime.min = today;
+      addbusArrivalTime.min = today;
+
+      // Event listener for departure time changes
+      addbusDepartureTime.addEventListener("change", function () {
+        const selectedDeparture = new Date(addbusDepartureTime.value);
+        const minArrival = new Date(selectedDeparture.getTime() + 60000); // Add 1 minute
+        addbusArrivalTime.min = minArrival.toISOString().slice(0, 16);
+      });
+
+      if (localStorage.getItem("isLogin") != "admin") {
+        location.href = "index.html";
+      }
+    </script>
+    <script src="./admin.js"></script>
   </body>
 </html>

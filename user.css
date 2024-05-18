@@ -23,10 +23,11 @@
 }
 
 .book {
-  position: absolute;
-  top: 30%;
-  left: 25%;
-  background-color: white;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-70%, -50%);
+  background-color: #bbb;
   padding: 30px;
   border: 2px solid;
   border-radius: 15px;
@@ -103,4 +104,139 @@ tr {
 
 #btnBookSets {
   display: none;
+}
+
+.tickeetlist {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  display: none;
+  width: 500px;
+  height: 500px;
+}
+.tickeetlist table {
+  margin-left: auto;
+  margin-right: auto;
+  width: 300px;
+  font-size: 18px;
+  margin-top: 100px;
+}
+
+.tickeetlist button {
+  float: right;
+}
+.profile {
+  float: right;
+  height: 30px;
+  width: 30px;
+  background-color: transparent;
+  font-size: 30px;
+  cursor: pointer;
+}
+
+.displayprofile {
+  display: none;
+  border-radius: 10px;
+  position: fixed;
+  top: 30px;
+  right: 10px;
+  height: 150px;
+  width: 250px;
+  background-color: #666;
+}
+.profile:hover .displayprofile {
+  display: block; /* Show the profile on hover */
+}
+
+.displayprofile .content {
+  /* background-color: green; */
+  width: 200px;
+  height: 80px;
+  margin: 30px;
+  color: white;
+}
+
+.displayprofile .content .btnlogout {
+  float: left;
+  padding: 0;
+  background-color: transparent;
+  color: red;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.displayprofile .content div {
+  margin-top: 15px;
+}
+.tktbtn {
+  border: none;
+}
+
+.book .Wrapper .ticketdetails {
+  display: block;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #999;
+  border: 2px solid #333;
+  border-radius: 15px;
+}
+
+.popupContent {
+  padding: 50px;
+}
+.popupContent table {
+  text-align: left;
+}
+
+.popupContent table td {
+  width: 200px;
+}
+.popupContent h3 {
+  text-align: center;
+}
+
+.container {
+  text-align: center; /* Center the content horizontally */
+}
+
+.payment-options {
+  margin-bottom: 20px;
+}
+
+.payment-option {
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.payment-options button.active {
+  background-color: #eee;
+}
+
+.payment-forms {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow forms to wrap if needed */
+}
+
+.payment-form {
+  display: none;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin: 10px;
+  width: 300px; /* Adjust width as needed */
+}
+
+.payment-form h2 {
+  margin-bottom: 10px;
 }

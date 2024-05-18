@@ -55,3 +55,75 @@
   border-radius: 5px;
   color: #dc635b;
 }
+
+.bus-listing {
+  /* Removed unnecessary properties */
+
+  display: flex; /* Enables flexbox layout */
+  justify-content: space-between; /* Aligns items horizontally */
+  border-bottom: 2px solid #999; /* Adds bottom border */
+  border-radius: 15px; /* Adds rounded corners */
+  margin-top: 15px; /* Adds top margin */
+
+  /* Optional enhancements for better styling */
+  padding: 15px 20px; /* Adds padding for spacing */
+  background-color: #fff; /* Sets background color */
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); /* Adds subtle shadow */
+  font-family: "Poppins", sans-serif; /* Sets font family */
+}
+
+#notoficationShow {
+  color: green;
+}
+
+#numbernotification {
+  position: absolute;
+  color: red;
+  margin-top: -7px;
+  margin-left: 20px;
+  font-weight: bold;
+}
+
+.notificationConatiner {
+  display: none;
+  position: fixed;
+  top: 50%; /* Center vertically */
+  left: 50%; /* Center horizontally */
+  transform: translate(-50%, -50%); /* Offset by half width and height */
+  background-color: #999;
+  border: 2px solid #333;
+  border-radius: 15px;
+  color: white;
+}
+
+.noficationcontent {
+  padding: 50px;
+}
+
+.header .Wrapper {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  align-content: center;
+}
+
+.containerclsoeBtn {
+  border: none;
+  background-color: transparent;
+  padding-top: 10px;
+  padding-right: 10px;
+  float: right;
+  display: block;
+  color: #dc635b;
+}
+
+.noficationcontent table {
+  text-align: center;
+}
+
+.noficationcontent table td {
+  width: 150px;
+}
+.noficationcontent button {
+  margin-left: auto;
+  margin-right: auto;
+}

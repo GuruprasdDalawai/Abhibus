@@ -3,17 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
       rel="stylesheet"
     />
+
     <link rel="stylesheet" href="./style.css" />
-    <link rel="styleSheet" href="./user.css" />
     <link rel="styleSheet" href="./admin.css" />
-    <script src="./user.js"></script>
+    <link rel="styleSheet" href="./user.css" />
+    <script src="
+https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
+
     <title>Abhi bus</title>
+    <script src="./user.js"></script>
   </head>
   <body>
     <header class="header">
@@ -21,12 +29,15 @@
         <div class="poppins-extrabold logoFontSize display-inlineblock">
           <span class="logColor">Abhi</span>bus
         </div>
-        <button class="float-right btn" onclick="showBookedTikets()">
-          Tickets
-        </button>
-        <div class="float-right user-detail">
-          <span id="Username"> Username </span>
-          <span class="float-right">Logout</span>
+        <div class="float-right">
+          <div style="display: inline-block">
+            <button class="btn tktbtn" onclick="showBookedTikets()">
+              Tickets
+            </button>
+          </div>
+          <div class="profile" id="profileICon" onclick="ShowProfile()">
+            <i class="bx bxs-user profile"></i>
+          </div>
         </div>
       </div>
     </header>
@@ -103,12 +114,14 @@
           X
         </button>
         <div class="busdetails">
-          <span>Vijayapura</span>
-          <span>24-05-2024</span>
-          <span>20:45</span>
-          <span>Bengalore</span>
-          <span>23-05-2024</span>
-          <spen>06:45</spen>
+          <span>From </span>
+          <span style="color: green" id="seat_from">Vijayapura</span>
+          <span id="seat_depatureDate">24-05-2024</span>
+          <!-- <span id="seat_depatureTime">20:45</span> -->
+          <span> T0 </span>
+          <span style="color: green" id="Seat_to">Bengalore</span>
+          <span id="seat_arrivalDate">23-05-2024</span>
+          <!-- <spen id="seat_arrivalTime">06:45</spen> -->
         </div>
         <div id="seatsDispaly" class="seatsDispaly">
           <div class="upperDekker">
@@ -423,16 +436,22 @@
           </button>
         </div>
       </div>
-      <div class="book Wrapper" id="passngerDetails">
-        <button class="clsoeBtn" onclick="test()">X</button>
+      <div class="book Wrapper" id="passngerDetails" style="width: 400px">
+        <button class="clsoeBtn" onclick="passngerDetails()">X</button>
         <h1>Passanger Details</h1>
         <div id="passngerListinput"></div>
-        <button class="btn" id="btbgoforPayment" onclick="goForPayment(this)">
-          Go Payment
+        <div class="error" id="displyErr"></div>
+        <button
+          class="btn"
+          id="btbgoforPayment"
+          onclick="goForPayment(this)"
+          style="float: right"
+        >
+          Go for Payment
         </button>
       </div>
-      <div class="book Wrapper" id="paymentContainer">
-        <button class="clsoeBtn" onclick="test()">X</button>
+      <div class="book Wrapper popup" id="paymentContainer">
+        <button class="clsoeBtn" onclick="paymentClose()">X</button>
         <h1>Payment Modes</h1>
         <div class="paymentcardConent" id="paymentCardContiner">
           <div class="input-box">
@@ -444,7 +463,12 @@
           <div class="input-box">
             <input type="password" id="cvv" placeholder="cvv" />
           </div>
-          <button id="btnCardPaymnet" class="btn" onclick="paynow(this)">
+          <button
+            id="btnCardPaymnet"
+            class="btn"
+            onclick="paynow(this)"
+            style="border: solid; margin-top: 15px; color: white"
+          >
             Paynow
           </button>
         </div>
@@ -452,38 +476,281 @@
           <div class="input-box">
             <input type="number" id="virtualID" placeholder="Virtua1 id" />
           </div>
-          <button id="btnVirtualPaymnet" class="btn" onclick="paynow(this)">
+          <button
+            id="btnVirtualPaymnet"
+            class="btn"
+            onclick="paynow(this)"
+            style="border: solid; margin-top: 15px; color: white"
+          >
             Paynow
           </button>
         </div>
       </div>
 
-      <div class="book Wrapper" id="ticketdetails">
+      <div
+        class="popup popupContent"
+        id="Cpy_ticketdetails"
+        style="display: none; z-index: -2"
+      >
+        <div class="poppins-extrabold logoFontSize display-inlineblock">
+          <span class="logColor">Abhi</span>bus
+        </div>
         <div><h3>Your ticket booked</h3></div>
         <h4>Tcket details</h4>
-        <table>
+        <table id="CPY_tiketdestailsdisplay">
           <tr>
-            <td>PNR</td>
-            <td><span id="pnrNumber"></span></td>
+            <td>busid</td>
+            <td>B_1715848491</td>
           </tr>
           <tr>
-            <td><span id="passanger1"></span></td>
+            <td>pnr</td>
+            <td>R_1715932772</td>
           </tr>
           <tr>
-            <td><span id="passanger2"></span></td>
+            <td>mobileNumber</td>
+            <td>6363135746</td>
           </tr>
           <tr>
-            <td><span id="passanger3"></span></td>
+            <td>passagers</td>
+            <td>,</td>
           </tr>
           <tr>
-            <td><span id="passanger4"></span></td>
+            <td>seats</td>
+            <td>L17,L20</td>
+          </tr>
+          <tr>
+            <td>journeyDate</td>
+            <td>2024-05-17T17:03</td>
+          </tr>
+          <tr>
+            <td>totalfare</td>
+            <td>1200</td>
           </tr>
         </table>
+        <h1>Happy journey</h1>
       </div>
-      <div id="ticketlist" class="book Wrapper">
-        <h1>working</h1>
+
+      <div class="popup" id="ticketdetailsContainer">
+        <button class="clsoeBtn" id="updateClose" onclick="closeTicket()">
+          X
+        </button>
+        <div class="popupContent" id="ticketdetails" style="display: block">
+          <div class="poppins-extrabold logoFontSize display-inlineblock">
+            <span class="logColor">Abhi</span>bus
+          </div>
+          <div><h3>Your ticket booked</h3></div>
+          <h4>Tcket details</h4>
+          <table id="tiketdestailsdisplay">
+            <tr>
+              <td>busid</td>
+              <td>B_1715848491</td>
+            </tr>
+            <tr>
+              <td>pnr</td>
+              <td>R_1715932772</td>
+            </tr>
+            <tr>
+              <td>mobileNumber</td>
+              <td>6363135746</td>
+            </tr>
+            <tr>
+              <td>passagers</td>
+              <td>,</td>
+            </tr>
+            <tr>
+              <td>seats</td>
+              <td>L17,L20</td>
+            </tr>
+            <tr>
+              <td>journeyDate</td>
+              <td>2024-05-17T17:03</td>
+            </tr>
+            <tr>
+              <td>totalfare</td>
+              <td>1200</td>
+            </tr>
+          </table>
+          <h1>Happy journey</h1>
+        </div>
+        <button
+          id="downBTN"
+          class="btn float-right"
+          style="cursor: pointer"
+          onclick="Download()"
+        >
+          Download Ticket
+        </button>
+      </div>
+
+      <div id="ticketlist" class="popup">
+        <button
+          class="containerclsoeBtn"
+          id="updateClose"
+          onclick="closeSeatSelection()"
+        >
+          X
+        </button>
+        <div class="popupContent" id="ticketdetails">
+          <h3>Your ticket booked</h3>
+          <table id="listofTicket">
+            <tr>
+              <td>totalfare</td>
+              <td>1200</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+      <div class="displayprofile" id="displayprofile">
+        <button
+          class="containerclsoeBtn"
+          id="updateClose"
+          onclick="closeProfile()"
+        >
+          X
+        </button>
+        <div class="content">
+          <div id="useNameDisplay">Guruprasad</div>
+          <div id="userMobile">6363135746</div>
+          <div>
+            <button class="btnlogout" onclick="logout()">Logout</button>
+          </div>
+        </div>
+      </div>
+      <div class="popup" id="noresult">
+        <button
+          class="containerclsoeBtn"
+          id="updateClose"
+          onclick="closeNoResult()"
+        >
+          X
+        </button>
+        <h1>No Results found</h1>
+      </div>
+      <div class="popup" style="display: none" id="paymnetmode">
+        <button
+          class="containerclsoeBtn"
+          id="updateClose"
+          onclick="closepayment()"
+        >
+          X
+        </button>
+        <div class="container">
+          <h1>Payment Method</h1>
+          <div class="payment-options">
+            <button class="payment-option" data-target="creditcard">
+              Credit Card
+            </button>
+            <button class="payment-option" data-target="debitcard">
+              Debit Card
+            </button>
+            <button class="payment-option" data-target="upi">UPI</button>
+          </div>
+          <div class="payment-forms">
+            <div class="payment-form" id="creditcard">
+              <h2>Credit Card Details</h2>
+              <table>
+                <tr>
+                  <td><label for="cardNumber">Card Number:</label></td>
+                  <td>
+                    <input
+                      type="text"
+                      id="cardNumber"
+                      id="input_cnumber"
+                      required
+                    />
+                    <span class="error" id="creditcard_err"></span>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td><label for="cvv">CVV:</label></td>
+                  <td>
+                    <input type="text" id="cvv" id="input_ccnumber" required />
+                    <span class="error" id="creditcvv_err"></span>
+                  </td>
+                </tr>
+              </table>
+              <button id="btnCredit" onclick="creditCardpayment(this)">
+                Pay Now
+              </button>
+            </div>
+            <div class="payment-form" id="debitcard">
+              <h2>Debit Card Details</h2>
+              <table>
+                <tr>
+                  <td><label for="debitCardNumber">Card Number:</label></td>
+                  <td>
+                    <input
+                      type="text"
+                      id="debitCardNumber"
+                      id="input_dnumber"
+                      required
+                    />
+                    <span class="error" id="debitcard_err"></span>
+                  </td>
+                </tr>
+                <tr>
+                  <td><label for="debitCvv">CVV:</label></td>
+                  <td>
+                    <input
+                      type="text"
+                      id="debitCvv"
+                      id="input_dcnumber"
+                      required
+                    />
+                    <span class="error" id="debitcvv_err"></span>
+                  </td>
+                </tr>
+              </table>
+              <button id="btnDebit" onclick="debitCardpayment(this)">
+                Pay Now
+              </button>
+            </div>
+            <div class="payment-form" id="upi">
+              <h2>UPI ID</h2>
+              <label for="upiId">Enter UPI ID:</label>
+              <input type="text" id="upiId" id="input_upi" required />
+              <span class="error" id="upi_err"></span>
+              <button id="btnUpi" onclick=" testhere()">Pay Now</button>
+            </div>
+          </div>
+        </div>
       </div>
     </main>
     <footer></footer>
+    <script>
+      const SearchDate = document.getElementById("SearchDate");
+      SearchDate.setAttribute("min", new Date().toISOString().split("T")[0]);
+      console.log(SearchDate);
+
+      function ShowProfile() {
+        document.getElementById("displayprofile").style.display = "block";
+      }
+
+      if (localStorage.getItem("isLogin") == "") {
+        location.href = "index.html";
+      }
+
+      let mobilenumber = localStorage.getItem("isLogin");
+      let list = JSON.parse(localStorage.getItem("reglist"));
+      let filter = list.filter((obj) => obj.mobileNumber === mobilenumber);
+      console.log(mobilenumber);
+      document.getElementById("userMobile").innerHTML = mobilenumber;
+      document.getElementById("useNameDisplay").innerHTML = filter[0].name;
+
+      const paymentOptions = document.querySelectorAll(".payment-option");
+      const paymentForms = document.querySelectorAll(".payment-form");
+
+      paymentOptions.forEach((button) => {
+        button.addEventListener("click", function () {
+          const targetId = this.dataset.target;
+          paymentOptions.forEach((option) => option.classList.remove("active"));
+          this.classList.add("active");
+          paymentForms.forEach((form) => (form.style.display = "none"));
+          document.getElementById(targetId).style.display = "block";
+        });
+      });
+    </script>
   </body>
 </html>

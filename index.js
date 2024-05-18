@@ -17,31 +17,28 @@ function registerBtn() {
     let reg_phoneNuber_err = document.getElementById("RegPhoneNumber_err");
     let reg_password_err = document.getElementById("RegPassword_err");
     let reg_crmPwd_err = document.getElementById("RegConfirmPassword_err");
-
     if (!validateName(reg_name)) {
-      displayErr("Invalid Name", "RegName_err");
     } else {
       restErr("RegName_err");
     }
 
     if (!validatePhoneNumber(reg_phoneNumber)) {
-      displayErr("Invalid Phone Number", "RegPhone_err");
     } else {
       restErr("RegPhone_err");
     }
     if (!ValidateEmail(reg_email)) {
-      displayErr("Invalid Email id", "RegEmai_err");
+      // displayErr("Invalid Email id", "RegEmai_err");
     } else {
       restErr("RegEmai_err");
     }
     if (!validatePassword(reg_password)) {
-      displayErr("Invalid invalid password", "RegPwd_err");
+      // displayErr("Invalid invalid password", "RegPwd_err");
     } else {
       restErr("RegPwd_err");
     }
 
-    if (!validatePassword(reg_crmPwd)) {
-      displayErr("Invalid invalid password", "RegCrfmPwd_err");
+    if (!validateCormPassword(reg_crmPwd)) {
+      // displayErr("Invalid password", "RegCrfmPwd_err");
     } else {
       restErr("RegCrfmPwd_err");
     }
@@ -54,7 +51,7 @@ function registerBtn() {
       validatePassword(reg_crmPwd)
     ) {
       if (reg_password !== reg_crmPwd) {
-        console(reg_password, reg_crmPwd_err);
+        // console(reg_password, reg_crmPwd_err);
         displayErr("Password did not match", "RegCrfmPwd_err");
         return;
       } else {
@@ -81,7 +78,6 @@ function registerBtn() {
         password: reg_password,
       });
       localStorage.setItem("reglist", JSON.stringify(reg_list));
-      localStorage.setItem("isLogin", reg_phoneNumber);
       // document.getElementById("RegisterContainer").style.display = "none";
       // document.getElementById("LoginContainer").style.display = "block";
       location.reload();
@@ -98,31 +94,70 @@ function regClose() {
 }
 
 function validateName(name) {
-  if (!name) return false;
+  if (!name) {
+    displayErr("Please enter your name.", "RegName_err");
+    return false;
+  }
   var regex = /^[a-zA-Z]+$/;
   if (!regex.test(name)) {
+    displayErr("Name can only contain letters (a-z, A-Z).", "RegName_err");
     return false;
   } else {
     return true;
   }
 }
 
-function validatePhoneNumber(number) {
-  if (typeof number !== "string") return false;
-  if (number.length !== 10) return false;
-  if (!/^[6-9]\d{9}$/.test(number)) return false;
+function validatePhoneNumber(reg_phoneNumber) {
+  if (typeof reg_phoneNumber !== "string") {
+    displayErr("Invalid phone number format.", "RegPhone_err");
+    return false;
+  }
+
+  // Check phone number length (adjust as needed)
+  if (reg_phoneNumber.length !== 10) {
+    displayErr("Phone number must be 10 digits.", "RegPhone_err");
+    return false;
+  }
+
+  // Check if phone number starts with a valid prefix (adjust as needed)
+  if (!/^[6-9]\d{9}$/.test(reg_phoneNumber)) {
+    displayErr(
+      "Phone number must start with 6-9 and contain 10 digits.",
+      "RegPhone_err"
+    );
+    return false;
+  }
+
   return true;
 }
 
 function ValidateEmail(email) {
+  if (!email) {
+    displayErr("Please enter your email address.", "RegEmai_err");
+    return false;
+  }
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
     return true;
+  } else {
+    displayErr(
+      "Please enter a valid email address (e.g., username@domain.com).",
+      "RegEmai_err"
+    );
+    return false;
   }
-  return false;
 }
 
 function validatePassword(pwd) {
   if (pwd == "" || pwd == undefined || pwd == null) {
+    displayErr("Please enter a password.", "RegPwd_err");
+    return false;
+  }
+  return true;
+}
+
+function validateCormPassword(pwd) {
+  if (pwd == "" || pwd == undefined || pwd == null) {
+    displayErr("Please enter a password.", "RegCrfmPwd_err");
     return false;
   }
   return true;
@@ -135,6 +170,7 @@ function displayErr(message, elemntID) {
 
 function restErr(elemntID) {
   let elemnt = document.getElementById(elemntID);
+  elemnt.innerHTML = "";
   elemnt.style.visibility = "hidden";
 }
 
@@ -151,14 +187,14 @@ function loginBtn() {
     let login_phonenumber = document.getElementById("login_phonenumber").value;
     let login_password = document.getElementById("login_password").value;
 
-    if (!validatePhoneNumber(login_phonenumber)) {
-      displayErr("Invalid Phone Number", "phone_err");
+    if (!LoginvalidatePhoneNumber(login_phonenumber)) {
+      //displayErr("Invalid Phone Number", "phone_err");
     } else {
       restErr("phone_err");
     }
 
     if (!validatePassword(login_password)) {
-      displayErr("Invalid invalid password", "pwd_err");
+      //displayErr("Invalid invalid password", "pwd_err");
     } else {
       restErr("pwd_err");
     }
@@ -173,6 +209,7 @@ function loginBtn() {
 
       if (login_phonenumber == "9611796790" && login_password === "admin") {
         console.log(" adminlogin");
+        localStorage.setItem("isLogin", "admin");
         location.href = "./admin.html";
         return;
       }
@@ -190,8 +227,10 @@ function loginBtn() {
           return;
         } else {
           if (res[0].password === login_password) {
-            console.log("you successfully loged in");
-            location.href = "./user.html";
+            localStorage.setItem("isLogin", login_phonenumber);
+            setTimeout(() => {
+              location.href = "user.html";
+            }, 2000);
           } else {
             displayErr("Invalid password", "pwd_err");
           }
@@ -205,4 +244,36 @@ function loginBtn() {
   } catch (e) {
     console.log(e);
   }
+}
+
+function LoginvalidatePhoneNumber(reg_phoneNumber) {
+  if (typeof reg_phoneNumber !== "string") {
+    displayErr("Invalid phone number format.", "phone_err");
+    return false;
+  }
+
+  // Check phone number length (adjust as needed)
+  if (reg_phoneNumber.length !== 10) {
+    displayErr("Phone number must be 10 digits.", "phone_err");
+    return false;
+  }
+
+  // Check if phone number starts with a valid prefix (adjust as needed)
+  if (!/^[6-9]\d{9}$/.test(reg_phoneNumber)) {
+    displayErr(
+      "Phone number must start with 6-9 and contain 10 digits.",
+      "phone_err"
+    );
+    return false;
+  }
+
+  return true;
+}
+
+function LoginvalidatePassword(pwd) {
+  if (pwd == "" || pwd == undefined || pwd == null) {
+    displayErr("Please enter a password.", "pwd_err");
+    return false;
+  }
+  return true;
 }

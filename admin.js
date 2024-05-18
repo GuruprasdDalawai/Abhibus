@@ -1,3 +1,7 @@
+// if (localStorage.getItem("isLogin") == null) {
+//   location.href = "./index.html";
+// }
+
 function showBusForm(event) {
   document.getElementById("addnewbus").style.display = "block";
 }
@@ -134,6 +138,7 @@ function addNewBus() {
     localStorage.setItem("buslist", JSON.stringify(buslist));
     buslist.forEach(displayContentBoy);
     document.getElementById("addnewbus").style.display = "none";
+    location.reload();
   } catch (e) {
     console.log(e);
   }
@@ -268,6 +273,10 @@ function displayContentBoy(obj) {
     ":" +
     String(a_dt.getMinutes()).padStart(2, "0");
 
+  let bookedSeates = obj.bookedSeats
+    ? obj.freeSeats - obj.bookedSeats.length
+    : obj.freeSeats;
+
   document.getElementById("displayContiner").insertAdjacentHTML(
     "beforeend",
     `<div  class="Wrapper addBus"  data-set="${obj.id}" onclick="showUpdateBusform(this)">
@@ -287,8 +296,7 @@ function displayContentBoy(obj) {
           </div>
           <div class="">
             <span>₹${obj.fare} </span>
-
-            <span>${obj.freeSeats} seats Available</span>
+            <span>${bookedSeates} seats Available</span>
           </div>
           </div>`
   );
@@ -344,4 +352,65 @@ function generateID_bus() {
     console.error("Error in generating ID:", e);
     return null;
   }
+}
+
+function updateDestinationOptions() {
+  const addbusSource = document.getElementById("addbusSource");
+  const addbusDestination = document.getElementById("addbusDestination");
+  const selectedSource = addbusSource.value;
+  // Clear existing options in the destination select
+  addbusDestination.innerHTML = "";
+  // Add a "Select" option for user choice
+  const selectOption = document.createElement("option");
+  selectOption.value = "";
+  selectOption.textContent = "Select";
+  addbusDestination.appendChild(selectOption);
+  // Add remaining cities as destination options (excluding selected source)
+  const cities = ["Bengaluru", "Hyderabad", "Mumbai", "Channai"];
+  for (const city of cities) {
+    if (city !== selectedSource) {
+      const option = document.createElement("option");
+      option.value = city;
+      option.textContent = city;
+      addbusDestination.appendChild(option);
+    }
+  }
+}
+
+function ShowNoficationDetails() {
+  document.getElementById("notificationConatiner").style.display = "block";
+  let element = document.getElementById("addNotificationTbl");
+  element.innerHTML = "";
+  element.insertAdjacentHTML(
+    "beforeend",
+    `<tr>
+    <td>PNR</td>
+    <td>MobileNumber</td><td>Seats</td
+    ><td>Status</td>
+  </tr>`
+  );
+  console.log(element);
+  if (localStorage.getItem("adminNotification") !== null) {
+    let Notification = JSON.parse(localStorage.getItem("adminNotification"));
+    Notification.forEach((obj) => {
+      element.insertAdjacentHTML(
+        "beforeend",
+        `<tr>
+        <td>${obj.pnr}</td>
+        <td>${obj.mobileNumber}</td><td>${obj.seats.length}</td
+        ><td>${obj.status}</td>
+      </tr>`
+      );
+    });
+  }
+  localStorage.setItem("adminNotification", JSON.stringify([]));
+}
+
+function adminLogout() {
+  localStorage.setItem("isLogin", "");
+  location.href = "index.html";
+}
+
+function closeNotification() {
+  document.getElementById("notificationConatiner").style.display = "none";
 }
