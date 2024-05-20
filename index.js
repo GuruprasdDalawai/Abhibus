@@ -91,6 +91,7 @@ function registerBtn() {
 function regClose() {
   document.getElementById("RegisterContainer").style.display = "none";
   document.getElementById("LoginContainer").style.display = "block";
+  location.reload();
 }
 
 function validateName(name, err_ElementID) {

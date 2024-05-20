@@ -356,24 +356,21 @@ function displayContentBoy(obj) {
     "beforeend",
     `<div  class="Wrapper addBus"  data-set="${obj.id}" onclick="showUpdateBusform(this)">
           <div>
-            <span>Bus No.<sapn>
             <span>${obj.company}</span>
             <div>${obj.busNumber}</div>
           </div>
           <div>
-          <span>from<sapn>
+
             <span>${obj.source}</span>
             <span>${date_dtStr}</span>
             <span>${time_dtStr}</span>
           </div>
           <div>
-          <span>To<sapn>
-            <spen>${obj.destination}</spen>
+            <span>${obj.destination}</span>
             <span>${date_atStr}</span>
             <span>${time_atStr}</span>
           </div>
           <div class="">
-            <span>Details<sapn>
             <span>₹${obj.fare} </span>
             <span>${bookedSeates} seats Available</span>
           </div>
