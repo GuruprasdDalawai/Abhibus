@@ -1,6 +1,8 @@
-function paynow(element) {
-  document.getElementById("paymentContainer").style.display = "none";
-  let journeydetails = JSON.parse(element.dataset.details);
+/// Afert  clicking the pyament clicked
+function paynow(details) {
+  // document.getElementById("paymentContainer").style.display = "none";
+  document.getElementById("paymnetmode").style.display = "none";
+  let journeydetails = JSON.parse(details);
   let buslist = JSON.parse(localStorage.getItem("buslist"));
   let currentUSer = localStorage.getItem("isLogin");
   let journeyDate = "";
@@ -9,7 +11,7 @@ function paynow(element) {
   buslist.forEach((obj) => {
     if (obj.id === journeydetails.busid) {
       let bookedlist = obj.bookedSeats ? Array.from(obj.bookedSeats) : [];
-      let selectedSeats = Array.from(journeydetails.selectedSeats);
+      let selectedSeats = journeydetails.selectedSeats;
       let list = [...bookedlist, ...selectedSeats];
       obj.bookedSeats = list;
       journeyDate = obj.departureDateTime;
@@ -29,7 +31,7 @@ function paynow(element) {
     pnr: "R_" + generateID(),
     mobileNumber: currentUSer,
     passagers: journeydetails.passangerlist,
-    seats: Array.from(journeydetails.selectedSeats),
+    seats: journeydetails.selectedSeats,
     journeyDate: journeyDate,
     totalfare: totalfare,
   };
@@ -77,35 +79,51 @@ function paynow(element) {
 function showpaymentContainer() {}
 
 function goForPayment(elemnt) {
-  document.getElementById("passngerDetails").style.display = "none";
   let details = JSON.parse(elemnt.dataset.details);
   let passsagerName = [];
   let inputs = Array.from(
     document.getElementById("passngerListinput").getElementsByTagName("input")
   );
-  inputs.forEach((input) => {
-    if (input.value) {
-      passsagerName.push(input.value);
-      document.getElementById("displyErr").innerHTML = "";
-    } else {
-      document.getElementById("displyErr").innerHTML =
-        "Please fill all feild as ";
+  // inputs.forEach((input) => {
+  //   if (input.value) {
+  //     passsagerName.push(input.value);
+  //     document.getElementById("displyErr").innerHTML = "";
+  //   } else {
+  //     document.getElementById("displyErr").innerHTML =
+  //       "Please fill all feild as ";
+  //     return;
+  //   }
+  // });
+
+  for (let i = 0; i < inputs.length; i++) {
+    if (!validateName(inputs[i].value, `Passange${i + 1}_err`)) {
       return;
+    } else {
+      passsagerName.push(inputs[i].value);
+      resetErr(`Passange${i + 1}_err`);
     }
-  });
+  }
+  document.getElementById("passngerDetails").style.display = "none";
   if (passsagerName.length !== inputs.length) {
     document.getElementById("displyErr").innerHTML =
       "Please fill all feild as ";
     return;
   }
   details.passangerlist = passsagerName;
-  document.getElementById("paymentContainer").style.display = "block";
-  document.getElementById("btnCardPaymnet").dataset.details =
+  // document.getElementById("paymentContainer").style.display = "block";
+  // document.getElementById("btnCardPaymnet").dataset.details =
+  //   JSON.stringify(details);
+  // document.getElementById("btnVirtualPaymnet").dataset.details =
+  //   JSON.stringify(details);
+
+  document.getElementById("btnCredit").dataset.details =
     JSON.stringify(details);
-  document.getElementById("btnVirtualPaymnet").dataset.details =
-    JSON.stringify(details);
+  document.getElementById("btnDebit").dataset.details = JSON.stringify(details);
+  document.getElementById("btnUpi").dataset.details = JSON.stringify(details);
+  document.getElementById("paymnetmode").style.display = "block";
 }
 
+//passager details auto generate inputbox
 function showPassangerpage(elemnt) {
   document.getElementById("seatContiner").style.display = "none";
 
@@ -118,7 +136,11 @@ function showPassangerpage(elemnt) {
     element_passngerListinput.insertAdjacentHTML(
       "beforeend",
       `<div class="input-box">
-      <input type="text" placeholder="Passange${i}" />
+      <input type="text" placeholder="Passange${i}"  id="Passange${i}"/>
+    </div>
+    <div class="errorContainer">
+      <sapn class="error" id="Passange${i}_err">
+      please check your phonenumber</sapn>
     </div>`
     );
   }
@@ -128,6 +150,7 @@ function showPassangerpage(elemnt) {
   document.getElementById("passngerDetails").style.display = "block";
 }
 
+// displaing seat layout and select seat
 function showseats(element) {
   let seat_from = document.getElementById("seat_from");
   let seat_depatureDate = document.getElementById("seat_depatureDate");
@@ -198,18 +221,27 @@ function showseats(element) {
     }
   });
 }
-
+// if dont want to select the seats  close the div
 function closeSeatSelection() {
   document.getElementById("seatContiner").style.display = "none";
   location.reload();
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  filterBusesByDepartureDateTime();
+});
+
+function filterBusesByDepartureDateTime() {
   if (localStorage.getItem("buslist") !== null) {
     let buslist = JSON.parse(localStorage.getItem("buslist"));
-    buslist.forEach(displayContentBoy);
+    const today = new Date();
+    const filteredBuses = buslist.filter((bus) => {
+      const departureDateTime = new Date(bus.departureDateTime);
+      return departureDateTime >= today;
+    });
+    filteredBuses.forEach(displayContentBoy);
   }
-});
+}
 
 // function userSearch() {
 //   let from = document.getElementById().value;
@@ -245,23 +277,26 @@ function displayContentBoy(obj) {
     "beforeend",
     `<div  class="Wrapper addBus">
           <div>
+            <span style="color:gray;"> Bus No</span>
             <span>${obj.company}</span>
             <div>${obj.busNumber}</div>
           </div>
           <div>
+            <span style="color:gray;">From</span>
             <span>${obj.source}</span>
             <span>${date_dtStr}</span>
             <span>${time_dtStr}</span>
           </div>
           <div>
+            <span style="color:gray;">To</span>
             <spen>${obj.destination}</spen>
             <span>${date_atStr}</span>
             <span>${time_atStr}</span>
           </div>
           <div class="">
-            <span>₹${obj.fare} </span>
-            <span> ${bookedSeates}</span>
-            <span> seats Available</span>
+            <span style="color:gray;">Details</span>
+            <span>₹ ${obj.fare} </span>
+            <span> ${bookedSeates} seats Available</span>
             <button class="btn" data-id="${obj.id}"onclick="showseats(this)">Book</button>
           </div>
           </div>`
@@ -278,32 +313,51 @@ function generateID() {
 }
 
 function searchBuses() {
-  let from = document.getElementById("txtSearchFrom").value;
-  let to = document.getElementById("txtSearchTo").value;
-  let journeyDate = document.getElementById("SearchDate").value;
+  try {
+    let from = document.getElementById("txtSearchFrom").value;
+    let to = document.getElementById("txtSearchTo").value;
+    let journeyDate = document.getElementById("SearchDate").value;
 
-  let buslist = [];
-  if (localStorage.getItem("buslist") !== null) {
-    buslist = JSON.parse(localStorage.getItem("buslist"));
-  }
-  let element = document.getElementById("displayContent");
-  let filtered = buslist.filter((obj) => {
-    let date1 = new Date(obj.departureDateTime);
-    let date2 = new Date(journeyDate);
-    if (
-      obj.source.toLowerCase() == from.toLowerCase() &&
-      obj.destination.toLowerCase() == to.toLowerCase() &&
-      date2 <= date1
-    ) {
-      return obj;
+    if (!validateCityInput(from, "txtSearchFrom_err")) {
+    } else {
+      resetErr("txtSearchFrom_err");
     }
-  });
 
-  console.log(filtered);
-  element.innerHTML = "";
-  if (filtered.length > 0) filtered.forEach(displayContentBoy);
-  else {
-    document.getElementById("noresult").style.display = "block";
+    if (!validateCityInput(to, "txtSearchTo_err")) {
+    } else {
+      resetErr("txtSearchFrom_err");
+    }
+    if (!validateDate(journeyDate, "SearchDate_err")) {
+    } else {
+      resetErr("SearchDate_err");
+    }
+    if (from && to) {
+      let buslist = [];
+      if (localStorage.getItem("buslist") !== null) {
+        buslist = JSON.parse(localStorage.getItem("buslist"));
+      }
+      let element = document.getElementById("displayContent");
+      let filtered = buslist.filter((obj) => {
+        let date1 = new Date(obj.departureDateTime);
+        let date2 = new Date(journeyDate);
+        if (
+          obj.source.toLowerCase() == from.toLowerCase() &&
+          obj.destination.toLowerCase() == to.toLowerCase() &&
+          date2 <= date1
+        ) {
+          return obj;
+        }
+      });
+
+      console.log(filtered);
+      element.innerHTML = "";
+      if (filtered.length > 0) filtered.forEach(displayContentBoy);
+      else {
+        document.getElementById("noresult").style.display = "block";
+      }
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
@@ -322,7 +376,9 @@ function showBookedTikets() {
       "<tr><td>PNR</td><td>Journey Date</td><td>passangers</td><td></td></tr>"
     );
     let filteredTicket = bookedTickets.filter(
-      (obj) => obj.mobileNumber === userMobile
+      (obj) =>
+        obj.mobileNumber === userMobile &&
+        new Date(obj.journeyDate) >= new Date()
     );
     if (filteredTicket.length > 0) {
       filteredTicket.forEach(TickesDisplay);
@@ -335,7 +391,7 @@ function showBookedTikets() {
       location.reload();
     }
   } else {
-    alert("no Tickets");
+    // alert("no Tickets");
     location.reload();
     // document
     //   .getElementById("ticketlist")
@@ -418,4 +474,137 @@ function closeNoResult() {
 
 function closeProfile() {
   document.getElementById("displayprofile").style.display = "none";
+}
+
+function validateCityInput(value, elemntID) {
+  if (value === "") {
+    displayErr("Please enter city name", elemntID);
+    return false;
+  }
+  return true;
+}
+
+function validateDate(dt, elemntID) {
+  if (dt === "") {
+    displayErr("Invalidate", elemntID);
+    return false;
+  }
+  return true;
+}
+
+function displayErr(message, elemntID) {
+  let elemnt = document.getElementById(elemntID);
+  elemnt.textContent = message;
+  elemnt.style.visibility = "visible";
+}
+
+function resetErr(elemntID) {
+  let elemnt = document.getElementById(elemntID);
+  elemnt.textContent = "err";
+  elemnt.style.visibility = "hidden";
+}
+
+function validateName(name, err_ElementID) {
+  if (!name) {
+    displayErr("Please enter your name.", err_ElementID);
+    return false;
+  }
+  var regex = /^[a-zA-Z]+$/;
+  if (!regex.test(name)) {
+    displayErr("Name can only contain letters (a-z, A-Z).", err_ElementID);
+    return false;
+  } else {
+    return true;
+  }
+}
+
+function creditCardpayment(element) {
+  let ccNumbeer = document.getElementById("input_cnumber").value;
+  let cvv = document.getElementById("input_ccnumber").value;
+  //Err
+
+  if (validateCard(ccNumbeer, cvv, "creditcard_err", "creditcvv_err")) {
+    paynow(element.dataset.details);
+  }
+}
+
+function debitCardpayment(element) {
+  let ccNumbeer = document.getElementById("input_dnumber").value;
+  let cvv = document.getElementById("input_dcnumber").value;
+  if (validateCard(ccNumbeer, cvv, "debitcard_err", "debitcvv_err")) {
+    // alert("working");
+    paynow(element.dataset.details);
+  }
+}
+
+function upipayment(element) {
+  let upiID = document.getElementById("input_upi").value;
+  if (validateUpi(upiID, "upi_err")) {
+    // alert("working");
+    paynow(element.dataset.details);
+  }
+}
+
+function validateCard(cardNumber, cvv, crdElemntID, cvvElemntID) {
+  // Card number validation (Luhn Algorithm for basic check)
+  const cardNumberRegex = /^\d{16}$/; // Matches 16 digits (common for most cards)
+  if (!cardNumberRegex.test(cardNumber)) {
+    displayErr("Invalid card number. Must be 16 digits.", crdElemntID);
+    return false;
+  } else {
+    resetErr(crdElemntID);
+  }
+
+  const cvvNumberRegex = /^\d{3}$/;
+  if (!cvvNumberRegex.test(cvv)) {
+    displayErr("Invalid cvv. Must be 3 digits.", cvvElemntID);
+    return false;
+  } else {
+    resetErr(cvvElemntID);
+  }
+
+  return true;
+}
+
+function validateUpi(upiId, elementID) {
+  const errors = []; // Array to store any errors
+
+  // Basic UPI format check
+  const upiRegex = /^[a-zA-Z0-9.@]+$/; // Alphanumeric, '@', and '.' characters
+  if (!upiRegex.test(upiId)) {
+    displayErr(
+      "Invalid UPI ID format. Please use alphanumeric characters, '@', and '.'.",
+      elementID
+    );
+    return false;
+  } else {
+    // Minimum length check (optional)
+    if (upiId.length < 3) {
+      displayErr(
+        "UPI ID seems too short. Please enter a valid UPI ID.",
+        elementID
+      );
+      return false;
+    } else {
+      resetErr(elementID);
+    }
+
+    // Check for '@' symbol (optional)
+    if (!upiId.includes("@")) {
+      displayErr(
+        "UPI ID is missing the '@' symbol. Please enter a valid UPI ID.",
+        elementID
+      );
+      return false;
+    } else {
+      resetErr(elementID);
+    }
+  }
+
+  return true; // Format seems valid (but actual validation requires server-side check)
+}
+
+function closepayment() {
+  document.getElementById("paymnetmode").style.display = "none";
+  location.reload();
 }

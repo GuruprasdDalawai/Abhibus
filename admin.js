@@ -63,6 +63,7 @@ function setValuesToUpdade(id) {
 }
 
 function addNewBus() {
+  debugger;
   try {
     let addbusNumber = document.getElementById("addbusNo").value;
     let addbusSource = document.getElementById("addbusSource").value;
@@ -121,9 +122,8 @@ function addNewBus() {
     if (localStorage.getItem("buslist") !== null) {
       buslist = JSON.parse(localStorage.getItem("buslist"));
     }
-
     let busID = generateID_bus();
-    buslist.push({
+    let newBus = {
       id: busID,
       busNumber: addbusNumber.toUpperCase(),
       source: addbusSource.toUpperCase(),
@@ -134,9 +134,66 @@ function addNewBus() {
       fare: addbusfare,
       company: addbuscompany,
       bookedSeats: [],
-    });
+    };
+    // Check for conflicts with all buses of the same number
+    const conflictingBuses = buslist.filter(
+      (bus) => bus.busNumber === newBus.busNumber
+    );
+
+    // If no conflicts found, add the new bus
+    if (!conflictingBuses.length) {
+      buslist.push(newBus);
+      localStorage.setItem("buslist", JSON.stringify(buslist));
+
+      let F_filterArr = buslist.filter(
+        (obj) => new Date() <= new Date(obj.departureDateTime)
+      );
+      F_filterArr.forEach(displayContentBoy); ///////////////////////////////////////////////////////////////////////
+      document.getElementById("addnewbus").style.display = "none";
+      location.reload();
+      return;
+    }
+
+    // Conflicts found, iterate through conflicting buses
+    for (const existingBus of conflictingBuses) {
+      const newDeparture = new Date(newBus.departureDateTime);
+      const existingDeparture = new Date(existingBus.departureDateTime);
+      const newArrival = new Date(newBus.ArrivalDateTime);
+      const existingArrival = new Date(existingBus.ArrivalDateTime);
+
+      // Conflicting scenarios:
+      if (newDeparture < existingDeparture && newArrival > existingArrival) {
+        displayErr(
+          `${newBus.busNumber} has conflicting arrival/departure times `,
+          "addbusNo_err"
+        );
+        return;
+      } else if (
+        newDeparture >= existingDeparture &&
+        newDeparture <= existingArrival
+      ) {
+        displayErr(
+          `${newBus.busNumber}has overlapping departure time `,
+          "addbusNo_err"
+        );
+        return;
+      } else if (
+        newArrival >= existingDeparture &&
+        newArrival <= existingArrival
+      ) {
+        displayErr(
+          `${newBus.busNumber}has overlapping arrival time `,
+          "addbusNo_err"
+        );
+        return;
+      }
+    }
+    buslist.push(newBus);
     localStorage.setItem("buslist", JSON.stringify(buslist));
-    buslist.forEach(displayContentBoy);
+    let F_filterArr = buslist.filter(
+      (obj) => new Date() <= new Date(obj.departureDateTime)
+    );
+    F_filterArr.forEach(displayContentBoy); ///////////////////////////////////////////////////
     document.getElementById("addnewbus").style.display = "none";
     location.reload();
   } catch (e) {
@@ -208,7 +265,7 @@ function validteCompany(company) {
 function displayErr(message, elemntID) {
   let elemnt = document.getElementById(elemntID);
   elemnt.textContent = message;
-  elemnt.parentElement.style.display = "block";
+  elemnt.parentElement.style.visibility = "visible";
 }
 
 function restErr(elemntID) {
@@ -220,7 +277,10 @@ document.addEventListener("DOMContentLoaded", function () {
   if (localStorage.getItem("buslist") !== null) {
     let buslist = JSON.parse(localStorage.getItem("buslist"));
     document.getElementById("displayContiner").innerHTML = "";
-    buslist.forEach(displayContentBoy);
+    let F_filterArr = buslist.filter(
+      (obj) => new Date() <= new Date(obj.departureDateTime)
+    );
+    F_filterArr.forEach(displayContentBoy); /////////////////////////////////////////////////////////
   }
 });
 
@@ -240,19 +300,34 @@ function searchBuses() {
         let busno = obj.busNumber.toLowerCase();
         seachText.toLowerCase();
         if (
-          comany.includes(seachText.toLowerCase()) ||
-          busno.includes(seachText.toLowerCase())
+          (comany.includes(seachText.toLowerCase()) ||
+            busno.includes(seachText.toLowerCase())) &&
+          new Date() <= new Date(obj.departureDateTime)
         ) {
           return obj;
         }
       });
       document.getElementById("displayContiner").innerHTML = "";
-      filterArr.forEach(displayContentBoy);
+
+      let F_filterArr = filterArr.filter(
+        (obj) => new Date() <= new Date(obj.departureDateTime)
+      );
+      F_filterArr.forEach(displayContentBoy); ////////////////////////////////////////
     }
   } else {
     buslist = JSON.parse(localStorage.getItem("buslist"));
     document.getElementById("displayContiner").innerHTML = "";
-    buslist.forEach(displayContentBoy);
+    filterArr = buslist.filter((obj) => {
+      if (new Date() <= new Date(obj.departureDateTime)) {
+        return obj;
+      }
+    });
+
+    let F_filterArr = filterArr.filter(
+      (obj) => new Date() <= new Date(obj.departureDateTime)
+    );
+
+    F_filterArr.forEach(displayContentBoy); //////////////////////////////////////////
   }
 }
 
@@ -281,20 +356,24 @@ function displayContentBoy(obj) {
     "beforeend",
     `<div  class="Wrapper addBus"  data-set="${obj.id}" onclick="showUpdateBusform(this)">
           <div>
+            <span>Bus No.<sapn>
             <span>${obj.company}</span>
             <div>${obj.busNumber}</div>
           </div>
           <div>
+          <span>from<sapn>
             <span>${obj.source}</span>
             <span>${date_dtStr}</span>
             <span>${time_dtStr}</span>
           </div>
           <div>
+          <span>To<sapn>
             <spen>${obj.destination}</spen>
             <span>${date_atStr}</span>
             <span>${time_atStr}</span>
           </div>
           <div class="">
+            <span>Details<sapn>
             <span>₹${obj.fare} </span>
             <span>${bookedSeates} seats Available</span>
           </div>
@@ -329,7 +408,11 @@ function updateBus(element) {
       }
     });
     document.getElementById("displayContiner").innerHTML = "";
-    buslist.forEach(displayContentBoy);
+
+    let F_filterArr = buslist.filter(
+      (obj) => new Date() <= new Date(obj.departureDateTime)
+    );
+    F_filterArr.forEach(displayContentBoy); ////////////////////////////////////////////////////////
     localStorage.setItem("buslist", JSON.stringify(buslist));
     document.getElementById("update").style.display = "none";
   }
@@ -340,7 +423,10 @@ function deleteBus(element) {
   buslist = JSON.parse(localStorage.getItem("buslist"));
   let removedlist = buslist.filter((obj) => obj.id !== id);
   document.getElementById("displayContiner").innerHTML = "";
-  removedlist.forEach(displayContentBoy);
+  let F_filterArr = removedlist.filter(
+    (obj) => new Date() <= new Date(obj.departureDateTime)
+  );
+  F_filterArr.forEach(displayContentBoy); /////////////////////////////////////////
   localStorage.setItem("buslist", JSON.stringify(removedlist));
   document.getElementById("update").style.display = "none";
 }
@@ -413,4 +499,9 @@ function adminLogout() {
 
 function closeNotification() {
   document.getElementById("notificationConatiner").style.display = "none";
+  localStorage.setItem("adminNotification", JSON.stringify([]));
 }
+
+// function addNewBus(buslist, newBus) {
+
+// }

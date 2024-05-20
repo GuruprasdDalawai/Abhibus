@@ -1,10 +1,21 @@
+#displayContiner .Wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .addBus {
   /* background-color: yellow; */
   display: flex;
-  justify-content: space-between;
-  border-bottom: 2px solid #999; /* #dc635b;*/
+  justify-content: space-around;
+  border: 2px solid #999; /* #dc635b;*/
   border-radius: 15px;
   margin-top: 15px;
+  background-color: rgba(16, 16, 16, 1);
+  color: white;
+  border-radius: 5px;
+  width: 60%;
+  align-items: center;
+  text-align: center;
 }
 .addBus div {
   padding: 10px;
@@ -21,8 +32,8 @@
   text-align: center;
   width: 60%;
   border: 2px solid #999;
-  border-radius: 15px;
-  background-color: #666;
+  border-radius: 5px;
+  background-color: rgba(16, 16, 16, 1);
 }
 .addnewbus span {
   color: wheat;
@@ -54,6 +65,7 @@
   border: 2px solid #999;
   border-radius: 5px;
   color: #dc635b;
+  cursor: pointer;
 }
 
 .bus-listing {
@@ -90,7 +102,7 @@
   top: 50%; /* Center vertically */
   left: 50%; /* Center horizontally */
   transform: translate(-50%, -50%); /* Offset by half width and height */
-  background-color: #999;
+  background-color: rgba(0, 0, 0, 1);
   border: 2px solid #333;
   border-radius: 15px;
   color: white;
@@ -126,4 +138,19 @@
 .noficationcontent button {
   margin-left: auto;
   margin-right: auto;
+}
+
+.errorContainer {
+  width: 100%;
+  text-align: left;
+  height: auto;
+  visibility: visible;
+  color: red;
+}
+.error {
+  color: red;
+  font-size: 10px;
+  padding: 0;
+  margin: 0;
+  visibility: hidden;
 }

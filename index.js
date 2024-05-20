@@ -17,38 +17,38 @@ function registerBtn() {
     let reg_phoneNuber_err = document.getElementById("RegPhoneNumber_err");
     let reg_password_err = document.getElementById("RegPassword_err");
     let reg_crmPwd_err = document.getElementById("RegConfirmPassword_err");
-    if (!validateName(reg_name)) {
+    if (!validateName(reg_name, "RegName_err")) {
     } else {
       restErr("RegName_err");
     }
 
-    if (!validatePhoneNumber(reg_phoneNumber)) {
+    if (!validatePhoneNumber(reg_phoneNumber, "RegPhone_err")) {
     } else {
       restErr("RegPhone_err");
     }
-    if (!ValidateEmail(reg_email)) {
+    if (!ValidateEmail(reg_email, "RegEmai_err")) {
       // displayErr("Invalid Email id", "RegEmai_err");
     } else {
       restErr("RegEmai_err");
     }
-    if (!validatePassword(reg_password)) {
+    if (!validatePassword(reg_password, "RegPwd_err")) {
       // displayErr("Invalid invalid password", "RegPwd_err");
     } else {
       restErr("RegPwd_err");
     }
 
-    if (!validateCormPassword(reg_crmPwd)) {
+    if (!validateCormPassword(reg_crmPwd, "RegCrfmPwd_err")) {
       // displayErr("Invalid password", "RegCrfmPwd_err");
     } else {
       restErr("RegCrfmPwd_err");
     }
 
     if (
-      validateName(reg_name) &&
-      validatePhoneNumber(reg_phoneNumber) &&
-      ValidateEmail(reg_email) &&
-      validatePassword(reg_password) &&
-      validatePassword(reg_crmPwd)
+      reg_name &&
+      reg_phoneNumber &&
+      reg_email &&
+      reg_password &&
+      reg_crmPwd
     ) {
       if (reg_password !== reg_crmPwd) {
         // console(reg_password, reg_crmPwd_err);
@@ -93,29 +93,33 @@ function regClose() {
   document.getElementById("LoginContainer").style.display = "block";
 }
 
-function validateName(name) {
+function validateName(name, err_ElementID) {
   if (!name) {
-    displayErr("Please enter your name.", "RegName_err");
+    displayErr("Please enter your name.", err_ElementID);
     return false;
   }
   var regex = /^[a-zA-Z]+$/;
   if (!regex.test(name)) {
-    displayErr("Name can only contain letters (a-z, A-Z).", "RegName_err");
+    displayErr("Name can only contain letters (a-z, A-Z).", err_ElementID);
     return false;
   } else {
     return true;
   }
 }
 
-function validatePhoneNumber(reg_phoneNumber) {
+function validatePhoneNumber(reg_phoneNumber, err_ElementID) {
+  if (reg_phoneNumber === "") {
+    displayErr("Please enter phone number.", err_ElementID);
+    return false;
+  }
   if (typeof reg_phoneNumber !== "string") {
-    displayErr("Invalid phone number format.", "RegPhone_err");
+    displayErr("Invalid phone number format.", err_ElementID);
     return false;
   }
 
   // Check phone number length (adjust as needed)
   if (reg_phoneNumber.length !== 10) {
-    displayErr("Phone number must be 10 digits.", "RegPhone_err");
+    displayErr("Phone number must be 10 digits.", err_ElementID);
     return false;
   }
 
@@ -123,7 +127,7 @@ function validatePhoneNumber(reg_phoneNumber) {
   if (!/^[6-9]\d{9}$/.test(reg_phoneNumber)) {
     displayErr(
       "Phone number must start with 6-9 and contain 10 digits.",
-      "RegPhone_err"
+      err_ElementID
     );
     return false;
   }
@@ -131,9 +135,9 @@ function validatePhoneNumber(reg_phoneNumber) {
   return true;
 }
 
-function ValidateEmail(email) {
+function ValidateEmail(email, err_ElementID) {
   if (!email) {
-    displayErr("Please enter your email address.", "RegEmai_err");
+    displayErr("Please enter your email address.", err_ElementID);
     return false;
   }
   if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
@@ -141,23 +145,23 @@ function ValidateEmail(email) {
   } else {
     displayErr(
       "Please enter a valid email address (e.g., username@domain.com).",
-      "RegEmai_err"
+      err_ElementID
     );
     return false;
   }
 }
 
-function validatePassword(pwd) {
+function validatePassword(pwd, err_ElementID) {
   if (pwd == "" || pwd == undefined || pwd == null) {
-    displayErr("Please enter a password.", "RegPwd_err");
+    displayErr("Please enter a password.", err_ElementID);
     return false;
   }
   return true;
 }
 
-function validateCormPassword(pwd) {
+function validateCormPassword(pwd, err_ElementID) {
   if (pwd == "" || pwd == undefined || pwd == null) {
-    displayErr("Please enter a password.", "RegCrfmPwd_err");
+    displayErr("Please enter a password.", err_ElementID);
     return false;
   }
   return true;
@@ -184,38 +188,30 @@ function Resetments() {
 
 function loginBtn() {
   try {
+    debugger;
     let login_phonenumber = document.getElementById("login_phonenumber").value;
     let login_password = document.getElementById("login_password").value;
 
-    if (!LoginvalidatePhoneNumber(login_phonenumber)) {
+    if (!validatePhoneNumber(login_phonenumber, "phone_err")) {
       //displayErr("Invalid Phone Number", "phone_err");
     } else {
       restErr("phone_err");
     }
 
-    if (!validatePassword(login_password)) {
+    if (!validatePassword(login_password, "pwd_err")) {
       //displayErr("Invalid invalid password", "pwd_err");
     } else {
       restErr("pwd_err");
     }
 
-    if (
-      validatePhoneNumber(login_phonenumber) &&
-      validatePassword(login_password)
-    ) {
+    if (login_phonenumber && login_password) {
       let reg_list = [];
-
-      console.log(login_phonenumber, login_password);
-
       if (login_phonenumber == "9611796790" && login_password === "admin") {
         console.log(" adminlogin");
         localStorage.setItem("isLogin", "admin");
         location.href = "./admin.html";
         return;
       }
-
-      console.log("user seaarch starts");
-
       if (localStorage.getItem("reglist") !== null) {
         reg_list = JSON.parse(localStorage.getItem("reglist"));
         reg_list = [...reg_list];
@@ -223,7 +219,7 @@ function loginBtn() {
           (obj) => obj.mobileNumber === login_phonenumber
         );
         if (res.length == 0) {
-          displayErr("Invalid PhoneNumber", "phone_err");
+          displayErr("This phone number is not registered", "phone_err");
           return;
         } else {
           if (res[0].password === login_password) {
@@ -239,41 +235,46 @@ function loginBtn() {
         alert("no localstorage");
       }
     }
-    document.getElementById("login_phonenumber").value = "";
-    document.getElementById("login_password").value = "";
+    // document.getElementById("login_phonenumber").value = "";
+    // document.getElementById("login_password").value = "";
   } catch (e) {
     console.log(e);
   }
 }
 
-function LoginvalidatePhoneNumber(reg_phoneNumber) {
-  if (typeof reg_phoneNumber !== "string") {
-    displayErr("Invalid phone number format.", "phone_err");
-    return false;
-  }
+// function LoginvalidatePhoneNumber(reg_phoneNumber, err_ElementID) {
+//   if (reg_phoneNumber === "") {
+//     displayErr("Please provide phone number.", err_ElementID);
+//     return false;
+//   }
 
-  // Check phone number length (adjust as needed)
-  if (reg_phoneNumber.length !== 10) {
-    displayErr("Phone number must be 10 digits.", "phone_err");
-    return false;
-  }
+//   if (typeof reg_phoneNumber !== "string") {
+//     displayErr("Invalid phone number format.", err_ElementID);
+//     return false;
+//   }
 
-  // Check if phone number starts with a valid prefix (adjust as needed)
-  if (!/^[6-9]\d{9}$/.test(reg_phoneNumber)) {
-    displayErr(
-      "Phone number must start with 6-9 and contain 10 digits.",
-      "phone_err"
-    );
-    return false;
-  }
+//   // Check phone number length (adjust as needed)
+//   if (reg_phoneNumber.length !== 10) {
+//     displayErr("Phone number must be 10 digits.", err_ElementID);
+//     return false;
+//   }
 
-  return true;
-}
+//   // Check if phone number starts with a valid prefix (adjust as needed)
+//   if (!/^[6-9]\d{9}$/.test(reg_phoneNumber)) {
+//     displayErr(
+//       "Phone number must start with 6-9 and contain 10 digits.",
+//       "phone_err"
+//     );
+//     return false;
+//   }
 
-function LoginvalidatePassword(pwd) {
-  if (pwd == "" || pwd == undefined || pwd == null) {
-    displayErr("Please enter a password.", "pwd_err");
-    return false;
-  }
-  return true;
-}
+//   return true;
+// }
+
+// function LoginvalidatePassword(pwd) {
+//   if (pwd == "" || pwd == undefined || pwd == null) {
+//     displayErr("Please enter a password.", "pwd_err");
+//     return false;
+//   }
+//   return true;
+// }

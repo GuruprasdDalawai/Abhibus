@@ -51,7 +51,11 @@
             }, 5000);
           </script>
           <span>
-            <box-icon name="envelope" id="notoficationShow"></box-icon
+            <box-icon
+              name="envelope"
+              id="notoficationShow"
+              style="color: white"
+            ></box-icon
           ></span>
         </div>
 
@@ -123,7 +127,7 @@
               <input type="text" placeholder="kA01GD0001" id="addbusNo" />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusNo_err"
+              <sapn class="error" style="color: red" id="addbusNo_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -141,7 +145,7 @@
               <!-- <input type="text" placeholder="Bengaluru" id="addbusSource" /> -->
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusSource_err"
+              <sapn class="error" style="color: red" id="addbusSource_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -153,7 +157,7 @@
               <!-- <input type="text" placeholder="Mysore" id="addbusDestination" /> -->
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusDestination_err"
+              <sapn class="error" style="color: red" id="addbusDestination_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -164,7 +168,10 @@
               <input type="datetime-local" id="addbusDepartureTime" />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusDepartureTime_err"
+              <sapn
+                class="error"
+                style="color: red"
+                id="addbusDepartureTime_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -175,7 +182,7 @@
               <input type="datetime-local" id="addbusArrivalTime" />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusArrivalTime_err"
+              <sapn class="error" style="color: red" id="addbusArrivalTime_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -192,7 +199,7 @@
               />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusSeats_err"
+              <sapn class="error" style="color: red" id="addbusSeats_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -203,7 +210,7 @@
               <input type="number" placeholder="₹" id="addbusfare" />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbusfare_err"
+              <sapn class="error" style="color: red" id="addbusfare_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -218,7 +225,7 @@
               />
             </div>
             <div class="errorContainer">
-              <sapn class="error" id="addbuscompany_err"
+              <sapn class="error" style="color: red" id="addbuscompany_err"
                 >please check your phonenumber</sapn
               >
             </div>
@@ -298,6 +305,7 @@
         >
           X
         </button>
+        <h1 style="text-align: center; color: #dc635b">Notification</h1>
         <div class="noficationcontent" id="addNotification">
           <table id="addNotificationTbl">
             <tr>
@@ -328,9 +336,9 @@
         addbusArrivalTime.min = minArrival.toISOString().slice(0, 16);
       });
 
-      if (localStorage.getItem("isLogin") != "admin") {
-        location.href = "index.html";
-      }
+      // if (localStorage.getItem("isLogin") != "admin") {
+      //   location.href = "index.html";
+      // }
     </script>
     <script src="./admin.js"></script>
   </body>

@@ -21,7 +21,7 @@
 https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
     <title>Abhi bus</title>
-    <script src="./user.js"></script>
+    <!-- <script src="./user.js"></script> -->
   </head>
   <body>
     <header class="header">
@@ -45,22 +45,49 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
     <main>
       <div id="serchdiv" class="search">
         <div class="Wrapper displayLine" id>
-          <div class="input-box">
-            <input type="text" placeholder="From" id="txtSearchFrom" />
+          <div>
+            <div class="input-box">
+              <input type="text" placeholder="From" id="txtSearchFrom" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="txtSearchFrom_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <input type="text" placeholder="To" id="txtSearchTo" />
+          <div>
+            <div class="input-box">
+              <input type="text" placeholder="To" id="txtSearchTo" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="txtSearchTo_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <input type="date" id="SearchDate" />
+          <div>
+            <div class="input-box">
+              <input type="date" id="SearchDate" />
+            </div>
+            <div class="errorContainer">
+              <sapn class="error" id="SearchDate_err"
+                >please check your phonenumber</sapn
+              >
+            </div>
           </div>
-          <div class="input-box">
-            <button type="submit" class="btn" onclick="searchBuses()">
-              Search
-            </button>
+          <div>
+            <div class="input-box">
+              <button type="submit" class="btn" onclick="searchBuses()">
+                Search
+              </button>
+            </div>
+            <div class="errorContainer">
+              <sapn class="error">please check your phonenumber</sapn>
+            </div>
           </div>
         </div>
       </div>
+
       <div id="displayContent"></div>
       <!-- <div id="addBus" class="Wrapper addBus">
         <div>
@@ -590,8 +617,12 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
         >
           X
         </button>
-        <div class="popupContent" id="ticketdetails">
-          <h3>Your ticket booked</h3>
+        <div
+          class="popupContent"
+          id="ticketdetails"
+          style="background-color: gray"
+        >
+          <h3 style="color: #dc635b">Your tickets</h3>
           <table id="listofTicket">
             <tr>
               <td>totalfare</td>
@@ -651,22 +682,17 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
               <h2>Credit Card Details</h2>
               <table>
                 <tr>
-                  <td><label for="cardNumber">Card Number:</label></td>
+                  <td><label for="input_cnumber">Card Number:</label></td>
                   <td>
-                    <input
-                      type="text"
-                      id="cardNumber"
-                      id="input_cnumber"
-                      required
-                    />
+                    <input type="text" id="input_cnumber" required />
                     <span class="error" id="creditcard_err"></span>
                   </td>
                 </tr>
 
                 <tr>
-                  <td><label for="cvv">CVV:</label></td>
+                  <td><label for="input_ccnumber">CVV:</label></td>
                   <td>
-                    <input type="text" id="cvv" id="input_ccnumber" required />
+                    <input type="password" id="input_ccnumber" required />
                     <span class="error" id="creditcvv_err"></span>
                   </td>
                 </tr>
@@ -679,26 +705,16 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
               <h2>Debit Card Details</h2>
               <table>
                 <tr>
-                  <td><label for="debitCardNumber">Card Number:</label></td>
+                  <td><label for="input_dnumber">Card Number:</label></td>
                   <td>
-                    <input
-                      type="text"
-                      id="debitCardNumber"
-                      id="input_dnumber"
-                      required
-                    />
+                    <input type="text" id="input_dnumber" required />
                     <span class="error" id="debitcard_err"></span>
                   </td>
                 </tr>
                 <tr>
-                  <td><label for="debitCvv">CVV:</label></td>
+                  <td><label for="input_dcnumber">CVV:</label></td>
                   <td>
-                    <input
-                      type="text"
-                      id="debitCvv"
-                      id="input_dcnumber"
-                      required
-                    />
+                    <input type="password" id="input_dcnumber" required />
                     <span class="error" id="debitcvv_err"></span>
                   </td>
                 </tr>
@@ -709,10 +725,10 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
             </div>
             <div class="payment-form" id="upi">
               <h2>UPI ID</h2>
-              <label for="upiId">Enter UPI ID:</label>
-              <input type="text" id="upiId" id="input_upi" required />
+              <label for="input_upi">Enter UPI ID:</label>
+              <input type="text" id="input_upi" required />
               <span class="error" id="upi_err"></span>
-              <button id="btnUpi" onclick=" testhere()">Pay Now</button>
+              <button id="btnUpi" onclick="upipayment(this)">Pay Now</button>
             </div>
           </div>
         </div>
@@ -752,5 +768,6 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
         });
       });
     </script>
+    <script src="./user.js"></script>
   </body>
 </html>

@@ -1,3 +1,8 @@
+#displayContent .Wrapper {
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .display-inlineblock {
   display: inline-block;
 }
@@ -27,11 +32,12 @@
   top: 50%;
   left: 50%;
   transform: translate(-70%, -50%);
-  background-color: #bbb;
+  background-color: rgba(16, 16, 16, 0.9);
   padding: 30px;
   border: 2px solid;
   border-radius: 15px;
   display: none;
+  color: white;
 }
 
 /* .seatsDispaly {
@@ -46,6 +52,7 @@
   border-radius: 5px;
   text-align: center;
   font-size: 10px;
+  color: black;
 }
 .pillow {
   float: right;
@@ -139,11 +146,11 @@ tr {
   display: none;
   border-radius: 10px;
   position: fixed;
-  top: 30px;
-  right: 10px;
+  top: 40px;
+  right: 35px;
   height: 150px;
   width: 250px;
-  background-color: #666;
+  background-color: rgba(16, 16, 16, 0.9);
 }
 .profile:hover .displayprofile {
   display: block; /* Show the profile on hover */
@@ -183,7 +190,8 @@ tr {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #999;
+  background-color: rgba(16, 16, 16, 1);
+  color: white;
   border: 2px solid #333;
   border-radius: 15px;
 }
