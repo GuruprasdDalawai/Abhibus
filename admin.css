@@ -3,6 +3,15 @@
   margin-right: auto;
 }
 
+#mainContiner {
+  height: 600px;
+  overflow-y: scroll;
+}
+
+#mainContiner::-webkit-scrollbar {
+  display: none;
+}
+
 .addBus {
   /* background-color: yellow; */
   display: flex;
@@ -14,9 +23,29 @@
   color: white;
   border-radius: 5px;
   width: 60%;
-  align-items: center;
+  align-items: top;
   text-align: center;
+  cursor: pointer;
 }
+
+.addBus:hover {
+  /* padding: 50px; */
+  background-color: white;
+  color: black;
+  transition: transform 0.2s; /* Animation */
+  margin: 0 auto;
+  transform: scale(1.1); /* (150% zoom) */
+}
+
+.zoom {
+  padding: 50px;
+  background-color: green;
+  transition: transform 0.2s; /* Animation */
+  width: 70%;
+  margin: 0 auto;
+  transform: scale(1.5); /* (150% zoom) */
+}
+
 .addBus div {
   padding: 10px;
   display: flex;
@@ -24,8 +53,9 @@
 }
 
 .addnewbus {
-  top: 50px;
-  left: 20%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   display: none;
   position: absolute;
   /* background-color: yellow; */
@@ -153,4 +183,34 @@
   padding: 0;
   margin: 0;
   visibility: hidden;
+}
+
+.content .btnlogout {
+  float: left;
+  padding: 0;
+  background-color: transparent;
+  color: red;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: start;
+}
+.content div {
+  margin-top: 15px;
+  text-align: start;
+}
+
+.displayprofile .content div:last-child {
+  margin-bottom: 15px;
+}
+
+.blur {
+  display: none;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.6);
+  z-index: 10;
 }

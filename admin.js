@@ -3,20 +3,26 @@
 // }
 
 function showBusForm(event) {
+  document.getElementById("layerBlur").style.display = "block";
   document.getElementById("addnewbus").style.display = "block";
+  document.getElementById("addnewbus").style.zIndex = 11;
 }
 
 function closeBusForm() {
   document.getElementById("addnewbus").style.display = "none";
+  location.reload();
 }
 
 function showUpdateBusform(element) {
+  document.getElementById("layerBlur").style.display = "block";
   document.getElementById("update").style.display = "block";
+  document.getElementById("update").style.zIndex = 11;
   setValuesToUpdade(element.dataset.set);
 }
 
 function closeUpdateBusForm() {
   document.getElementById("update").style.display = "none";
+  location.reload();
 }
 
 function setValuesToUpdade(id) {
@@ -140,7 +146,7 @@ function addNewBus() {
       (bus) => bus.busNumber === newBus.busNumber
     );
 
-    // If no conflicts found, add the new bus
+    // // If no conflicts found, add the new bus
     if (!conflictingBuses.length) {
       buslist.push(newBus);
       localStorage.setItem("buslist", JSON.stringify(buslist));
@@ -153,79 +159,69 @@ function addNewBus() {
       location.reload();
       return;
     }
-
-    // Conflicts found, iterate through conflicting buses
-    for (const existingBus of conflictingBuses) {
-      const newDeparture = new Date(newBus.departureDateTime);
-      const existingDeparture = new Date(existingBus.departureDateTime);
-      const newArrival = new Date(newBus.ArrivalDateTime);
-      const existingArrival = new Date(existingBus.ArrivalDateTime);
-
-      // Conflicting scenarios:
-      if (newDeparture < existingDeparture && newArrival > existingArrival) {
-        displayErr(
-          `${newBus.busNumber} has conflicting arrival/departure times `,
-          "addbusNo_err"
-        );
-        return;
-      } else if (
-        newDeparture >= existingDeparture &&
-        newDeparture <= existingArrival
+    let shoudIbook = true;
+    let deaprt = addbusDepartureTime;
+    let arival = addbusArrivalTime;
+    conflictingBuses.forEach((Obj) => {
+      let exdeaprt = new Date(Obj.departureDateTime);
+      let exaival = new Date(Obj.ArrivalDateTime);
+      if (
+        (deaprt > exdeaprt &&
+          deaprt > exaival &&
+          arival > exdeaprt &&
+          arival > exaival) ||
+        (deaprt < exdeaprt &&
+          deaprt < exaival &&
+          arival < exdeaprt &&
+          arival < exaival)
       ) {
-        displayErr(
-          `${newBus.busNumber}has overlapping departure time `,
-          "addbusNo_err"
-        );
-        return;
-      } else if (
-        newArrival >= existingDeparture &&
-        newArrival <= existingArrival
-      ) {
-        displayErr(
-          `${newBus.busNumber}has overlapping arrival time `,
-          "addbusNo_err"
-        );
-        return;
+      } else {
+        shoudIbook = false;
       }
+    });
+
+    if (shoudIbook) {
+      buslist.push(newBus);
+      localStorage.setItem("buslist", JSON.stringify(buslist));
+      let F_filterArr = buslist.filter(
+        (obj) => new Date() <= new Date(obj.departureDateTime)
+      );
+      F_filterArr.forEach(displayContentBoy); ///////////////////////////////////////////////////
+      document.getElementById("addnewbus").style.display = "none";
+      location.reload();
+    } else {
+      displayErr(`${newBus.busNumber}has overlapping time `, "addbusNo_err");
     }
-    buslist.push(newBus);
-    localStorage.setItem("buslist", JSON.stringify(buslist));
-    let F_filterArr = buslist.filter(
-      (obj) => new Date() <= new Date(obj.departureDateTime)
-    );
-    F_filterArr.forEach(displayContentBoy); ///////////////////////////////////////////////////
-    document.getElementById("addnewbus").style.display = "none";
-    location.reload();
   } catch (e) {
     console.log(e);
   }
 }
 
-function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
-  if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
-  if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
-  if (b_start < a_start && a_end < b_end) return true; // a in b
-  return false;
-}
-function multipleDateRangeOverlaps() {
-  var i, j;
-  if (arguments.length % 2 !== 0)
-    throw new TypeError("Arguments length must be a multiple of 2");
-  for (i = 0; i < arguments.length - 2; i += 2) {
-    for (j = i + 2; j < arguments.length; j += 2) {
-      if (
-        dateRangeOverlaps(
-          arguments[i],
-          arguments[i + 1],
-          arguments[j],
-          arguments[j + 1]
-        )
-      )
-        return true;
-    }
-  }
-  return false;
-}
+// function dateRangeOverlaps(a_start, a_end, b_start, b_end) {
+//   if (a_start <= b_start && b_start <= a_end) return true; // b starts in a
+//   if (a_start <= b_end && b_end <= a_end) return true; // b ends in a
+//   if (b_start < a_start && a_end < b_end) return true; // a in b
+//   return false;
+// }
+// function multipleDateRangeOverlaps() {
+//   var i, j;
+//   if (arguments.length % 2 !== 0)
+//     throw new TypeError("Arguments length must be a multiple of 2");
+//   for (i = 0; i < arguments.length - 2; i += 2) {
+//     for (j = i + 2; j < arguments.length; j += 2) {
+//       if (
+//         dateRangeOverlaps(
+//           arguments[i],
+//           arguments[i + 1],
+//           arguments[j],
+//           arguments[j + 1]
+//         )
+//       )
+//         return true;
+//     }
+//   }
+//   return false;
+// }
 
 function validateBusno(busNumber) {
   if (busNumber) return true;
@@ -265,12 +261,14 @@ function validteCompany(company) {
 function displayErr(message, elemntID) {
   let elemnt = document.getElementById(elemntID);
   elemnt.textContent = message;
+  elemnt.style.visibility = "visible";
   elemnt.parentElement.style.visibility = "visible";
 }
 
 function restErr(elemntID) {
   let elemnt = document.getElementById(elemntID);
-  elemnt.parentElement.style.display = "none";
+  elemnt.style.visibility = "hidden";
+  elemnt.parentElement.style.display = "hidden";
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -354,24 +352,27 @@ function displayContentBoy(obj) {
 
   document.getElementById("displayContiner").insertAdjacentHTML(
     "beforeend",
-    `<div  class="Wrapper addBus"  data-set="${obj.id}" onclick="showUpdateBusform(this)">
+    `<div  class="Wrapper addBus"   data-set="${obj.id}" onclick="showUpdateBusform(this)">
           <div>
+          <span style="color:gray;"> Bus No</span>
             <span>${obj.company}</span>
             <div>${obj.busNumber}</div>
           </div>
           <div>
-
+            <span style="color:gray;">From</span>
             <span>${obj.source}</span>
             <span>${date_dtStr}</span>
             <span>${time_dtStr}</span>
           </div>
           <div>
+            <span style="color:gray;">To</span>
             <span>${obj.destination}</span>
             <span>${date_atStr}</span>
             <span>${time_atStr}</span>
           </div>
           <div class="">
-            <span>₹${obj.fare} </span>
+          <span style="color:gray;">Details</span>
+            <span>₹ ${obj.fare} </span>
             <span>${bookedSeates} seats Available</span>
           </div>
           </div>`
@@ -461,14 +462,17 @@ function updateDestinationOptions() {
 }
 
 function ShowNoficationDetails() {
+  document.getElementById("layerBlur").style.display = "block";
   document.getElementById("notificationConatiner").style.display = "block";
+  document.getElementById("notificationConatiner").style.zIndex = 11;
   let element = document.getElementById("addNotificationTbl");
   element.innerHTML = "";
   element.insertAdjacentHTML(
     "beforeend",
     `<tr>
     <td>PNR</td>
-    <td>MobileNumber</td><td>Seats</td
+    <td>User Name</td>
+    <td>Mobile Number</td><td>Seats</td
     ><td>Status</td>
   </tr>`
   );
@@ -480,6 +484,7 @@ function ShowNoficationDetails() {
         "beforeend",
         `<tr>
         <td>${obj.pnr}</td>
+        <td>${obj.BookedBy}</td>
         <td>${obj.mobileNumber}</td><td>${obj.seats.length}</td
         ><td>${obj.status}</td>
       </tr>`
@@ -497,8 +502,18 @@ function adminLogout() {
 function closeNotification() {
   document.getElementById("notificationConatiner").style.display = "none";
   localStorage.setItem("adminNotification", JSON.stringify([]));
+  location.reload();
 }
 
 // function addNewBus(buslist, newBus) {
 
 // }
+
+function showProfile() {
+  document.getElementById("displayprofile").style.display = "block";
+  document.getElementById("displayprofile").style.zIndex = 10;
+}
+
+function closeProfile() {
+  document.getElementById("displayprofile").style.display = "none";
+}

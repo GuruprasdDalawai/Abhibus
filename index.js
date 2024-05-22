@@ -44,11 +44,10 @@ function registerBtn() {
     }
 
     if (
-      reg_name &&
-      reg_phoneNumber &&
-      reg_email &&
-      reg_password &&
-      reg_crmPwd
+      validateName(reg_name, "RegName_err") &&
+      validatePhoneNumber(reg_phoneNumber, "RegPhone_err") &&
+      validatePassword(reg_password, "RegPwd_err") &&
+      validateCormPassword(reg_crmPwd, "RegCrfmPwd_err")
     ) {
       if (reg_password !== reg_crmPwd) {
         // console(reg_password, reg_crmPwd_err);
@@ -152,9 +151,46 @@ function ValidateEmail(email, err_ElementID) {
   }
 }
 
-function validatePassword(pwd, err_ElementID) {
-  if (pwd == "" || pwd == undefined || pwd == null) {
+function validatePassword(password, err_ElementID) {
+  if (password == "" || password == undefined || password == null) {
     displayErr("Please enter a password.", err_ElementID);
+    return false;
+  }
+  if (password.length < 8) {
+    displayErr("Password must be at least 8 characters long.", err_ElementID);
+    return false;
+  }
+  const hasUpper = /[A-Z]/.test(password);
+  const hasLower = /[a-z]/.test(password);
+  const hasNumber = /\d/.test(password);
+  const hasSpecial = /[!@#$%^&*]/.test(password);
+
+  if (!hasUpper) {
+    displayErr(
+      "Password must contain at least one uppercase letter.",
+      err_ElementID
+    );
+    return false;
+  }
+
+  if (!hasLower) {
+    displayErr(
+      "Password must contain at least one lowercase letter.",
+      err_ElementID
+    );
+    return false;
+  }
+
+  if (!hasNumber) {
+    displayErr("Password must contain at least one number.", err_ElementID);
+    return false;
+  }
+
+  if (!hasSpecial) {
+    displayErr(
+      "Password must contain at least one special character.",
+      err_ElementID
+    );
     return false;
   }
   return true;
@@ -241,6 +277,21 @@ function loginBtn() {
   } catch (e) {
     console.log(e);
   }
+}
+
+function resetRegister() {
+  debugger;
+  let reg_name = (document.getElementById("RegName").value = "");
+  let reg_email = (document.getElementById("RegEmail").value = "");
+  let reg_phoneNumber = (document.getElementById("RegPhoneNumber").value = "");
+  let reg_password = (document.getElementById("RegPassword").value = "");
+  let reg_crmPwd = (document.getElementById("RegConfirmPassword").value = "");
+  //Err elements
+  document.getElementById("RegName_err").style.visibility = "hidden";
+  document.getElementById("RegEmai_err").style.visibility = "hidden";
+  document.getElementById("RegPhone_err").style.visibility = "hidden";
+  document.getElementById("RegPwd_err").style.visibility = "hidden";
+  document.getElementById("RegCrfmPwd_err").style.visibility = "hidden";
 }
 
 // function LoginvalidatePhoneNumber(reg_phoneNumber, err_ElementID) {

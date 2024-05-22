@@ -24,12 +24,12 @@ function paynow(details) {
   if (localStorage.getItem("bookedTicket") !== null) {
     bookedTikets = JSON.parse(localStorage.getItem("bookedTicket"));
   }
-
   let obj_tiket_details = {
     busid: journeydetails.busid,
     BusNumber: busNumber,
     pnr: "R_" + generateID(),
     mobileNumber: currentUSer,
+    BookedBy: getCurrentUSerDeatails(currentUSer)?.name,
     passagers: journeydetails.passangerlist,
     seats: journeydetails.selectedSeats,
     journeyDate: journeyDate,
@@ -41,6 +41,7 @@ function paynow(details) {
 
   console.log(obj_tiket_details);
   document.getElementById("ticketdetailsContainer").style.display = "block";
+  document.getElementById("ticketdetailsContainer").style.zIndex = 11;
   let elemtntTicket = document.getElementById("tiketdestailsdisplay");
   elemtntTicket.innerHTML = "";
   for (const [key, value] of Object.entries(obj_tiket_details)) {
@@ -48,32 +49,29 @@ function paynow(details) {
       elemtntTicket.insertAdjacentHTML(
         "beforeend",
         `
-    <tr><td>${key}</td><td> ${value}</td></tr>
+    <tr><td>${key}</td><td> ${
+          key === journeyDate ? value.replce("T", " ") : value
+        }</td></tr>
     `
       );
     }
   }
-
-  // debugger;
-
-  // document.getElementById("Cpy_ticketdetails").style.display = "block";
-  // let CPYelemtntTicket = document.getElementById("CPY_tiketdestailsdisplay");
-  // CPYelemtntTicket.innerHTML = "";
-  // for (const [key, value] of Object.entries(obj_tiket_details)) {
-  //   if (key !== "busid") {
-  //     CPYelemtntTicket.insertAdjacentHTML(
-  //       "beforeend",
-  //       `
-  //   <tr><td>${key}</td><td> ${value}</td></tr>
-  //   `
-  //     );
-  //   }
-  // }
-
   let Notification = JSON.parse(localStorage.getItem("adminNotification"));
   obj_tiket_details.status = "booked";
   Notification.push(obj_tiket_details);
   localStorage.setItem("adminNotification", JSON.stringify(Notification));
+}
+
+function getCurrentUSerDeatails(MobileNumber) {
+  try {
+    if (localStorage.getItem("reglist") !== null) {
+      let registerList = JSON.parse(localStorage.getItem("reglist"));
+      registerList.filter((obj) => obj.mobileNumber === MobileNumber);
+      return registerList[0];
+    }
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 function showpaymentContainer() {}
@@ -121,6 +119,7 @@ function goForPayment(elemnt) {
   document.getElementById("btnDebit").dataset.details = JSON.stringify(details);
   document.getElementById("btnUpi").dataset.details = JSON.stringify(details);
   document.getElementById("paymnetmode").style.display = "block";
+  document.getElementById("paymnetmode").style.zIndex = 11;
 }
 
 //passager details auto generate inputbox
@@ -148,10 +147,13 @@ function showPassangerpage(elemnt) {
   document.getElementById("btbgoforPayment").dataset.details =
     elemnt.dataset.details;
   document.getElementById("passngerDetails").style.display = "block";
+  document.getElementById("passngerDetails").style.zIndex = 11;
 }
 
-// displaing seat layout and select seat
+// displaying seat layout and select seat
 function showseats(element) {
+  document.getElementById("layerBlur").style.display = "block";
+
   let seat_from = document.getElementById("seat_from");
   let seat_depatureDate = document.getElementById("seat_depatureDate");
   let Seat_to = document.getElementById("Seat_to");
@@ -173,6 +175,7 @@ function showseats(element) {
   );
   let bookedSeates = String(busdetails.bookedSeats).split(",");
   document.getElementById("seatContiner").style.display = "block";
+  document.getElementById("seatContiner").style.zIndex = 11;
 
   const seats = document.querySelectorAll(".seat");
   let selectedSeats = 0;
@@ -325,7 +328,7 @@ function searchBuses() {
 
     if (!validateCityInput(to, "txtSearchTo_err")) {
     } else {
-      resetErr("txtSearchFrom_err");
+      resetErr("txtSearchTo_err");
     }
     if (!validateDate(journeyDate, "SearchDate_err")) {
     } else {
@@ -362,8 +365,11 @@ function searchBuses() {
 }
 
 function showBookedTikets() {
+  debugger;
   let TicketElemt = document.getElementById("ticketlist");
   TicketElemt.style.display = "block";
+  TicketElemt.style.zIndex = 11;
+  document.getElementById("layerBlur").style.display = "block";
   let bookedTickets = [];
   let userMobile = "";
   if (localStorage.getItem("bookedTicket") !== null) {
@@ -387,12 +393,12 @@ function showBookedTikets() {
       //   .getElementById("ticketlist")
       //   .insertAdjacentHTML("beforeend", `<h1>No Ticketes found<h1>`);
       alert("You dont have any tickets");
-      TicketElemt.style.display = "none";
-      location.reload();
+      // TicketElemt.style.display = "none";
+      // location.reload();
     }
   } else {
     // alert("no Tickets");
-    location.reload();
+    // location.reload();
     // document
     //   .getElementById("ticketlist")
     //   .insertAdjacentHTML("beforeend", `<h1>No Tickectes<h1>`);

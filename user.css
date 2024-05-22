@@ -148,7 +148,6 @@ tr {
   position: fixed;
   top: 40px;
   right: 35px;
-  height: 150px;
   width: 250px;
   background-color: rgba(16, 16, 16, 0.9);
 }
@@ -159,7 +158,6 @@ tr {
 .displayprofile .content {
   /* background-color: green; */
   width: 200px;
-  height: 80px;
   margin: 30px;
   color: white;
 }
@@ -176,6 +174,10 @@ tr {
 .displayprofile .content div {
   margin-top: 15px;
 }
+.displayprofile .content div:last-child {
+  margin-bottom: 15px;
+}
+
 .tktbtn {
   border: none;
 }
@@ -247,4 +249,21 @@ tr {
 
 .payment-form h2 {
   margin-bottom: 10px;
+}
+
+#paymnetmode {
+  width: 650px;
+  height: 500px;
+}
+
+#paymnetmode h1 {
+  margin-top: 35px;
+}
+
+#displayContent {
+  height: 580px;
+  overflow-y: scroll;
+}
+#displayContent::-webkit-scrollbar {
+  display: none;
 }

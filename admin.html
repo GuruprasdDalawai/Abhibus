@@ -4,6 +4,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,54 +25,80 @@
   <body>
     <header class="header">
       <div class="Wrapper">
-        <div class="poppins-extrabold logoFontSize display-inlineblock">
+        <div
+          class="poppins-extrabold logoFontSize display-inlineblock"
+          onclick="location.reload()"
+          style="cursor: pointer"
+        >
           <span class="logColor">Abhi</span>bus
         </div>
-        <div
-          style="
-            display: inline-block;
-            /* background-color: yellow; */
-            align-content: center;
-            cursor: pointer;
-            align-content: center;
-            margin-top: 5px;
-            margin-bottom: auto;
-          "
-          id="notificationDiv"
-          onclick="ShowNoficationDetails()"
-        >
-          <sapn class="numbernotification" id="numbernotification"></sapn>
-          <script>
-            setInterval(() => {
-              let list = JSON.parse(localStorage.getItem("adminNotification"));
-              // alert(list.length);
-              if (list.length > 0) {
-                document.getElementById("numbernotification").innerHTML =
-                  list.length;
-              } else {
-                document.getElementById("numbernotification").innerHTML = "";
-              }
-            }, 5000);
-          </script>
-          <span>
-            <box-icon
-              name="envelope"
-              id="notoficationShow"
-              style="color: white"
-            ></box-icon
-          ></span>
-        </div>
-
-        <div class="float-right user-detail">
-          <span
-            class="float-right"
-            style="color: red; cursor: pointer"
-            onclick="adminLogout();"
-            >Logout</span
+        <div class="float-right">
+          <div
+            style="
+              display: inline-block;
+              /* background-color: yellow; */
+              text-align: center;
+              cursor: pointer;
+              align-content: center;
+              margin-top: 5px;
+              margin-bottom: auto;
+              margin-right: 15px;
+            "
+            id="notificationDiv"
+            onclick="ShowNoficationDetails()"
           >
+            <sapn class="numbernotification" id="numbernotification"></sapn>
+            <script>
+              setInterval(() => {
+                let list =
+                  localStorage.getItem("adminNotification") !== null
+                    ? JSON.parse(localStorage.getItem("adminNotification"))
+                    : [];
+                if (list.length > 0) {
+                  document.getElementById("numbernotification").innerHTML =
+                    list.length;
+                } else {
+                  document.getElementById("numbernotification").innerHTML = "";
+                }
+              }, 2000);
+            </script>
+            <!--<span style="font-size: 28px">
+              <box-icon0
+                name="envelope"
+                id="notoficationShow"
+                style="color: white"
+              ></box-icon0
+            > 
+              
+            </span>-->
+            <i class="bx bx-envelope" style="font-size: 32px"></i>
+          </div>
+          <div class="float-right user-detail" onclick="showProfile()">
+            <i class="bx bxs-user profile"></i>
+          </div>
+          <div class="displayprofile" id="displayprofile">
+            <button class="containerclsoeBtn" onclick="closeProfile()">
+              X
+            </button>
+            <div class="content">
+              <div id="userNameDisplay">Admin</div>
+              <div id="userEmailID">admin@gmail.com</div>
+              <div id="userMobile">9611796790</div>
+              <div class="float-right">
+                <button class="btn" onclick="logout()">Logout</button>
+              </div>
+            </div>
+            <!-- <span
+              class="float-right"
+              style="color: red; cursor: pointer"
+              onclick="adminLogout();"
+              >Logout</span
+            > -->
+          </div>
         </div>
       </div>
     </header>
+
     <main>
       <div id="serchdiv" class="search2">
         <div class="Wrapper displayLine" id>
@@ -113,212 +143,229 @@
           <span>3 seats Available</span>
         </div>
       </div> -->
-
-      <div id="displayContiner"></div>
-      <div id="addnewbus" class="addnewbus">
-        <button class="clsoeBtn" id="RegClose" onclick="closeBusForm()">
-          X
-        </button>
-        <h1>Add new Bus</h1>
-        <form>
-          <div>
+      <div id="mainContiner">
+        <div id="displayContiner"></div>
+        <div id="addnewbus" class="addnewbus">
+          <button class="clsoeBtn" id="RegClose" onclick="closeBusForm()">
+            X
+          </button>
+          <h1>Add new Bus</h1>
+          <form>
+            <div>
+              <div class="input-box">
+                <span>Busno</span>
+                <input type="text" placeholder="kA01GD0001" id="addbusNo" />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" style="color: red" id="addbusNo_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Source</span>
+                <select id="addbusSource" onchange="updateDestinationOptions()">
+                  <option value="">Select</option>
+                  <option value="Bengaluru">Bengaluru</option>
+                  <option value="Hyderabad">Hyderabad</option>
+                  <option value="Mumbai">Mumbai</option>
+                  <option value="Channai">Channai</option>
+                </select>
+                <!-- <input type="text" placeholder="Bengaluru" id="addbusSource" /> -->
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" style="color: red" id="addbusSource_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Destination</span>
+                <select id="addbusDestination"></select>
+                <!-- <input type="text" placeholder="Mysore" id="addbusDestination" /> -->
+              </div>
+              <div class="errorContainer">
+                <sapn
+                  class="error"
+                  style="color: red"
+                  id="addbusDestination_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Depearture Time</span>
+                <input type="datetime-local" id="addbusDepartureTime" />
+              </div>
+              <div class="errorContainer">
+                <sapn
+                  class="error"
+                  style="color: red"
+                  id="addbusDepartureTime_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Arrival Time</span>
+                <input type="datetime-local" id="addbusArrivalTime" />
+              </div>
+              <div class="errorContainer">
+                <sapn
+                  class="error"
+                  style="color: red"
+                  id="addbusArrivalTime_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Seats</span>
+                <input
+                  type="number"
+                  placeholder="22"
+                  value="42"
+                  id="addbusSeats"
+                  readonly
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" style="color: red" id="addbusSeats_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Fare</span>
+                <input type="number" placeholder="₹" id="addbusfare" />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" style="color: red" id="addbusfare_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <span>Name of company</span>
+                <input
+                  type="text"
+                  placeholder="company name"
+                  id="addbuscompany"
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" style="color: red" id="addbuscompany_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+          </form>
+          <div class="float-right">
+            <div class="btn-group">
+              <button class="btn" onclick="addNewBus()">AddBus</button>
+            </div>
+          </div>
+        </div>
+        <div id="update" class="addnewbus">
+          <button
+            class="clsoeBtn"
+            id="updateClose"
+            onclick="closeUpdateBusForm()"
+          >
+            X
+          </button>
+          <h1>Bus details</h1>
+          <form>
             <div class="input-box">
               <span>Busno</span>
-              <input type="text" placeholder="kA01GD0001" id="addbusNo" />
+              <input type="text" placeholder="kA01GD0001" id="updateBusno" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusNo_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
               <span>Source</span>
-              <select id="addbusSource" onchange="updateDestinationOptions()">
-                <option value="">Select</option>
-                <option value="Bengaluru">Bengaluru</option>
-                <option value="Hyderabad">Hyderabad</option>
-                <option value="Mumbai">Mumbai</option>
-                <option value="Channai">Channai</option>
-              </select>
-              <!-- <input type="text" placeholder="Bengaluru" id="addbusSource" /> -->
+              <input type="text" placeholder="Bengaluru" id="updateSource" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusSource_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
               <span>Destination </span>
-              <select id="addbusDestination"></select>
-              <!-- <input type="text" placeholder="Mysore" id="addbusDestination" /> -->
+              <input type="text" placeholder="Mysore" id="updateDeestination" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusDestination_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
-              <span>Depearture Time</span>
-              <input type="datetime-local" id="addbusDepartureTime" />
+              <span>Departure Time</span>
+              <input type="datetime-local" id="updateDeparuteTime" />
             </div>
-            <div class="errorContainer">
-              <sapn
-                class="error"
-                style="color: red"
-                id="addbusDepartureTime_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
               <span>Arrival Time</span>
-              <input type="datetime-local" id="addbusArrivalTime" />
+              <input type="datetime-local" id="updateArrivalTime" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusArrivalTime_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
               <span>Seats</span>
               <input
                 type="number"
-                placeholder="22"
+                placeholder="42"
                 value="42"
-                id="addbusSeats"
+                id="updateSeat"
                 readonly
               />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusSeats_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
               <span>Fare</span>
-              <input type="number" placeholder="₹" id="addbusfare" />
+              <input type="number" placeholder="₹" id="updateFare" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbusfare_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-          </div>
-          <div>
             <div class="input-box">
-              <span>Name of company</span>
-              <input
-                type="text"
-                placeholder="company name"
-                id="addbuscompany"
-              />
+              <span>comapany</span>
+              <input type="text" placeholder="company" id="updateCompany" />
             </div>
-            <div class="errorContainer">
-              <sapn class="error" style="color: red" id="addbuscompany_err"
-                >please check your phonenumber</sapn
-              >
+          </form>
+          <div class="float-right">
+            <div class="btn-group">
+              <button class="btn" id="updatebtn" onclick="updateBus(this)">
+                Update
+              </button>
+              <button class="btn" id="deleteBtn" onclick="deleteBus(this)">
+                DELETE
+              </button>
             </div>
-          </div>
-        </form>
-        <div class="float-right">
-          <div class="btn-group">
-            <button class="btn" onclick="addNewBus()">AddBus</button>
           </div>
         </div>
-      </div>
-      <div id="update" class="addnewbus">
-        <button
-          class="clsoeBtn"
-          id="updateClose"
-          onclick="closeUpdateBusForm()"
-        >
-          X
-        </button>
-        <h1>Bus details</h1>
-        <form>
-          <div class="input-box">
-            <span>Busno</span>
-            <input type="text" placeholder="kA01GD0001" id="updateBusno" />
+        <div class="notificationConatiner" id="notificationConatiner">
+          <button
+            class="containerclsoeBtn"
+            id="updateClose"
+            onclick="closeNotification()"
+          >
+            X
+          </button>
+          <h1 style="text-align: center; color: #dc635b">Notification</h1>
+          <div class="noficationcontent" id="addNotification">
+            <table id="addNotificationTbl">
+              <tr>
+                <td>PNR</td>
+                <td>USer Name</td>
+                <td>Mobile</td>
+                <td>seats</td>
+                <td>Status</td>
+              </tr>
+            </table>
           </div>
-          <div class="input-box">
-            <span>Source</span>
-            <input type="text" placeholder="Bengaluru" id="updateSource" />
-          </div>
-          <div class="input-box">
-            <span>Destination </span>
-            <input type="text" placeholder="Mysore" id="updateDeestination" />
-          </div>
-          <div class="input-box">
-            <span>Departure Time</span>
-            <input type="datetime-local" id="updateDeparuteTime" />
-          </div>
-          <div class="input-box">
-            <span>Arrival Time</span>
-            <input type="datetime-local" id="updateArrivalTime" />
-          </div>
-          <div class="input-box">
-            <span>Seats</span>
-            <input
-              type="number"
-              placeholder="42"
-              value="42"
-              id="updateSeat"
-              readonly
-            />
-          </div>
-          <div class="input-box">
-            <span>Fare</span>
-            <input type="number" placeholder="₹" id="updateFare" />
-          </div>
-          <div class="input-box">
-            <span>comapany</span>
-            <input type="text" placeholder="company" id="updateCompany" />
-          </div>
-        </form>
-        <div class="float-right">
-          <div class="btn-group">
-            <button class="btn" id="updatebtn" onclick="updateBus(this)">
-              Update
-            </button>
-            <button class="btn" id="deleteBtn" onclick="deleteBus(this)">
-              DELETE
-            </button>
-          </div>
-        </div>
-      </div>
-      <div class="notificationConatiner" id="notificationConatiner">
-        <button
-          class="containerclsoeBtn"
-          id="updateClose"
-          onclick="closeNotification()"
-        >
-          X
-        </button>
-        <h1 style="text-align: center; color: #dc635b">Notification</h1>
-        <div class="noficationcontent" id="addNotification">
-          <table id="addNotificationTbl">
-            <tr>
-              <td>PNR</td>
-              <td>Mobile</td>
-              <td>seats</td>
-              <td>Status</td>
-            </tr>
-          </table>
         </div>
       </div>
     </main>
-    <footer></footer>
+
+    <footer>
+      <div class="Wrapper">
+        <div>AbhiBus</div>
+        <div class="copyRigh">
+          Copyright @ GSD Technologies Ltd. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+    <div class="blur" id="layerBlur" onclick="location.reload()"></div>
 
     <script>
       const addbusDepartureTime = document.getElementById(

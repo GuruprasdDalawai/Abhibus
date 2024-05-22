@@ -26,7 +26,11 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
   <body>
     <header class="header">
       <div class="Wrapper">
-        <div class="poppins-extrabold logoFontSize display-inlineblock">
+        <div
+          class="poppins-extrabold logoFontSize display-inlineblock"
+          style="cursor: pointer"
+          onclick="location.reload()"
+        >
           <span class="logColor">Abhi</span>bus
         </div>
         <div class="float-right">
@@ -43,7 +47,7 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
     </header>
 
     <main>
-      <div id="serchdiv" class="search">
+      <div id="serchdiv" class="search2" style="margin-top: 15px">
         <div class="Wrapper displayLine" id>
           <div>
             <div class="input-box">
@@ -523,7 +527,7 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
           <span class="logColor">Abhi</span>bus
         </div>
         <div><h3>Your ticket booked</h3></div>
-        <h4>Tcket details</h4>
+        <h4>Ticket details</h4>
         <table id="CPY_tiketdestailsdisplay">
           <tr>
             <td>busid</td>
@@ -617,11 +621,7 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
         >
           X
         </button>
-        <div
-          class="popupContent"
-          id="ticketdetails"
-          style="background-color: gray"
-        >
+        <div class="popupContent" id="ticketdetails">
           <h3 style="color: #dc635b">Your tickets</h3>
           <table id="listofTicket">
             <tr>
@@ -641,10 +641,11 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
           X
         </button>
         <div class="content">
-          <div id="useNameDisplay">Guruprasad</div>
+          <div id="userNameDisplay">Guruprasad</div>
+          <div id="userEmailID">example@gmail.com</div>
           <div id="userMobile">6363135746</div>
-          <div>
-            <button class="btnlogout" onclick="logout()">Logout</button>
+          <div class="float-right">
+            <button class="btn" onclick="logout()">Logout</button>
           </div>
         </div>
       </div>
@@ -667,7 +668,7 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
           X
         </button>
         <div class="container">
-          <h1>Payment Method</h1>
+          <h1>Payment Modes</h1>
           <div class="payment-options">
             <button class="payment-option" data-target="creditcard">
               Credit Card
@@ -734,7 +735,15 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
         </div>
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <div class="Wrapper">
+        <div>AbhiBus</div>
+        <div class="copyRigh">
+          Copyright @ GSD Technologeis Ltd. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
+    <div class="blur" id="layerBlur" onclick="location.reload()"></div>
     <script>
       const SearchDate = document.getElementById("SearchDate");
       SearchDate.setAttribute("min", new Date().toISOString().split("T")[0]);
@@ -753,7 +762,8 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
       let filter = list.filter((obj) => obj.mobileNumber === mobilenumber);
       console.log(mobilenumber);
       document.getElementById("userMobile").innerHTML = mobilenumber;
-      document.getElementById("useNameDisplay").innerHTML = filter[0].name;
+      document.getElementById("userNameDisplay").innerHTML = filter[0].name;
+      document.getElementById("userEmailID").innerHTML = filter[0].email;
 
       const paymentOptions = document.querySelectorAll(".payment-option");
       const paymentForms = document.querySelectorAll(".payment-form");

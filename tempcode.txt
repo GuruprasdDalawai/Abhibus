@@ -329,3 +329,54 @@ Seconds: ${difference.seconds}
 Minutes: ${difference.minutes}
 Hours: ${difference.hours}
 Days: ${difference.days}`);
+
+
+
+<div style="display: inline-block">
+        <div
+          style="
+            display: inline-block;
+            /* background-color: yellow; */
+            align-content: center;
+            cursor: pointer;
+            align-content: center;
+            margin-top: 5px;
+            margin-bottom: auto;
+          "
+          id="notificationDiv"
+          onclick="ShowNoficationDetails()"
+        >
+          <sapn class="numbernotification" id="numbernotification"></sapn>
+          <script>
+            setInterval(() => {
+              let list =
+                localStorage.getItem("adminNotification") !== null
+                  ? JSON.parse(localStorage.getItem("adminNotification"))
+                  : [];
+              // alert(list.length);
+              if (list.length > 0) {
+                document.getElementById("numbernotification").innerHTML =
+                  list.length;
+              } else {
+                document.getElementById("numbernotification").innerHTML = "";
+              }
+            }, 5000);
+          </script>
+          <span>
+            <box-icon
+              name="envelope"
+              id="notoficationShow"
+              style="color: white"
+            ></box-icon
+          ></span>
+        </div>
+
+        <div class="float-right user-detail">
+          <span
+            class="float-right"
+            style="color: red; cursor: pointer"
+            onclick="adminLogout();"
+            >Logout</span
+          >
+        </div>
+      </div>

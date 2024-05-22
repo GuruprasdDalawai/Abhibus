@@ -76,69 +76,115 @@
           <button class="clsoeBtn" id="RegClose" onclick="regClose()">X</button>
         </div>
         <div class="Wrapper">
+          <h3 class="poppins-light">Register to AbhiBus</h3>
           <div class="form">
-            <h3 class="poppins-light">Register to AbhiBus</h3>
-            <div class="input-box">
-              <input type="text" placeholder="Name" id="RegName" />
+            <div>
+              <div class="input-box">
+                <input type="text" placeholder="Name" id="RegName" />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegName_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
             </div>
-            <div class="errorContainer">
-              <sapn class="error" id="RegName_err"
-                >please check your phonenumber</sapn
+            <div>
+              <div class="input-box">
+                <input
+                  type="number"
+                  placeholder="Phone number"
+                  id="RegPhoneNumber"
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegPhone_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <input type="email" placeholder="Email" id="RegEmail" />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegEmai_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <input
+                  type="password"
+                  placeholder="Password"
+                  id="RegPassword"
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegPwd_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+            <div>
+              <div class="input-box">
+                <input
+                  type="password"
+                  placeholder="Confirm password"
+                  id="RegConfirmPassword"
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegCrfmPwd_err"
+                  >please check your phonenumber</sapn
+                >
+              </div>
+            </div>
+
+            <div>
+              <!-- <div class="input-box">
+                <input
+                  type="password"
+                  placeholder="Confirm password"
+                  id="RegConfirmPassword"
+                />
+              </div>
+              <div class="errorContainer">
+                <sapn class="error" id="RegCrfmPwd_err"
+                  >please check your phonenumber</sapn
+                >
+              </div> -->
+            </div>
+            <div class="buttonGroup">
+              <button
+                class="btn"
+                id="register_btn"
+                onclick="registerBtn()"
+                style="background-color: #dc635b"
               >
-            </div>
-            <div class="input-box">
-              <input
-                type="number"
-                placeholder="Phone number"
-                id="RegPhoneNumber"
-              />
-            </div>
-            <div class="errorContainer">
-              <sapn class="error" id="RegPhone_err"
-                >please check your phonenumber</sapn
+                Register
+              </button>
+              <button
+                class="btn"
+                id="register_btn"
+                onclick="resetRegister()"
+                style="background-color: #dc635b"
               >
+                Reset
+              </button>
             </div>
-            <div class="input-box">
-              <input type="email" placeholder="Email" id="RegEmail" />
-            </div>
-            <div class="errorContainer">
-              <sapn class="error" id="RegEmai_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-            <div class="input-box">
-              <input type="password" placeholder="Password" id="RegPassword" />
-            </div>
-            <div class="errorContainer">
-              <sapn class="error" id="RegPwd_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-            <div class="input-box">
-              <input
-                type="password"
-                placeholder="Confirm password"
-                id="RegConfirmPassword"
-              />
-            </div>
-            <div class="errorContainer">
-              <sapn class="error" id="RegCrfmPwd_err"
-                >please check your phonenumber</sapn
-              >
-            </div>
-            <button
-              class="btn"
-              id="register_btn"
-              onclick="registerBtn()"
-              style="background-color: #dc635b"
-            >
-              Register
-            </button>
           </div>
         </div>
       </div>
     </main>
-    <footer></footer>
+    <footer>
+      <div class="Wrapper">
+        <div>AbhiBus</div>
+        <div class="copyRigh">
+          Copyright @ GSD Technologeis Ltd. All Rights Reserved.
+        </div>
+      </div>
+    </footer>
     <script src="./index.js"></script>
   </body>
 </html>
