@@ -241,9 +241,12 @@ function loginBtn() {
       restErr("pwd_err");
     }
 
-    if (login_phonenumber && login_password) {
+    if (
+      validatePhoneNumber(login_phonenumber, "phone_err") &&
+      validatePassword(login_password, "pwd_err")
+    ) {
       let reg_list = [];
-      if (login_phonenumber == "9611796790" && login_password === "admin") {
+      if (login_phonenumber == "9611796790" && login_password === "Admin@107") {
         console.log(" adminlogin");
         localStorage.setItem("isLogin", "admin");
         location.href = "./admin.html";

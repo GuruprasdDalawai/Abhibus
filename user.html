@@ -566,43 +566,80 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
           X
         </button>
         <div class="popupContent" id="ticketdetails" style="display: block">
-          <div class="poppins-extrabold logoFontSize display-inlineblock">
-            <span class="logColor">Abhi</span>bus
+          <div class="PDFTicket">
+            <div class="TicketWrapper">
+              <div class="TicketHeader">
+                <h2>AbhiBus</h2>
+                <span>www.abhiBus.com</span>
+                <span>Tollfree No:1890123456</span>
+              </div>
+              <p>
+                <span>Ticket NO.</span>
+                <span id="ticketNumber"></span> &nbsp; &nbsp;
+                <span>Bus No.</span>
+                <span id="ticket_busno"></span>
+              </p>
+              <table>
+                <thead>
+                  <td>ORIGIN</td>
+                  <td>DESTINATION</td>
+                  <td>JOURNEY DATE AND TINME</td>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td id="origin_pass">VIJAYAPURA</td>
+                    <td id="dest_pass">VIJAYAPURA</td>
+                    <td id="pass_jDate">12-03-2023 09:30 PM</td>
+                  </tr>
+                </tbody>
+                <tr></tr>
+              </table>
+              <p>Booked By:<span id="bookedperson">Guruprasad</span></p>
+              <table id="addPassangerTbl">
+                <tr>
+                  <td>Srl No.</td>
+                  <td>Seat No</td>
+                  <td>Passanger Name</td>
+                  <td>Fare</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>L4</td>
+                  <td>Guruprasad</td>
+                  <td>900</td>
+                </tr>
+              </table>
+              <h5>
+                TOTAL BOOKING AMOUNT: <span id="tkt_total_fare"> Rs. 900</span>
+              </h5>
+              <p>TERMS AND CONDITIONS :</p>
+              <ol>
+                <li>
+                  The ticket is valid for the particular journey to which it is
+                  issued
+                </li>
+                <li>
+                  Passengers are required to produce Govt. issued ID proof
+                  compulsory while boarding the bus
+                </li>
+              </ol>
+              <br />
+              <p
+                style="
+                  font-family: Monotype Corsiva;
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  margin-top: 10%;
+                "
+              >
+                &ast;&ast;&ast;&ast;&ast; wish you a happy journey
+                &ast;&ast;&ast;&ast;&ast;
+              </p>
+            </div>
           </div>
-          <div><h3>Your ticket booked</h3></div>
-          <h4>Tcket details</h4>
-          <table id="tiketdestailsdisplay">
-            <tr>
-              <td>busid</td>
-              <td>B_1715848491</td>
-            </tr>
-            <tr>
-              <td>pnr</td>
-              <td>R_1715932772</td>
-            </tr>
-            <tr>
-              <td>mobileNumber</td>
-              <td>6363135746</td>
-            </tr>
-            <tr>
-              <td>passagers</td>
-              <td>,</td>
-            </tr>
-            <tr>
-              <td>seats</td>
-              <td>L17,L20</td>
-            </tr>
-            <tr>
-              <td>journeyDate</td>
-              <td>2024-05-17T17:03</td>
-            </tr>
-            <tr>
-              <td>totalfare</td>
-              <td>1200</td>
-            </tr>
-          </table>
-          <h1>Happy journey</h1>
         </div>
+
         <button
           id="downBTN"
           class="btn float-right"
@@ -737,12 +774,32 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
     </main>
     <footer>
       <div class="Wrapper">
-        <div>AbhiBus</div>
-        <div class="copyRigh">
-          Copyright @ GSD Technologeis Ltd. All Rights Reserved.
+        <div class="infoBar">
+          <div>
+            <address>
+              <h4>Address</h4>
+              <span>#579, 3rd Floor, 2nd Main,</span>
+              <span>2nd Block, Vajayanagar,</span>
+              <span>Vijayapuara,India,</span>
+              <span>Pincode 586109</span>
+            </address>
+          </div>
+          <div>
+            <h4>Other Sevice</h4>
+            <ul>
+              <li>Logestics</li>
+              <li>Cargo Shipping</li>
+            </ul>
+          </div>
         </div>
       </div>
     </footer>
+    <div class="copyrights" id="endFooter">
+      <div class="Wrapper">
+        <div>AbhiBus</div>
+        <div>Copyright @ GSD Technologeis Ltd. All Rights Reserved.</div>
+      </div>
+    </div>
     <div class="blur" id="layerBlur" onclick="location.reload()"></div>
     <script>
       const SearchDate = document.getElementById("SearchDate");
@@ -753,9 +810,9 @@ https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></scr
         document.getElementById("displayprofile").style.display = "block";
       }
 
-      if (localStorage.getItem("isLogin") == "") {
-        location.href = "index.html";
-      }
+      // if (localStorage.getItem("isLogin") == "") {
+      //   location.href = "index.html";
+      // }
 
       let mobilenumber = localStorage.getItem("isLogin");
       let list = JSON.parse(localStorage.getItem("reglist"));

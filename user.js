@@ -8,6 +8,9 @@ function paynow(details) {
   let journeyDate = "";
   let totalfare;
   let busNumber;
+  let BusFrom;
+  let BusTo;
+  let BusSeatFare;
   buslist.forEach((obj) => {
     if (obj.id === journeydetails.busid) {
       let bookedlist = obj.bookedSeats ? Array.from(obj.bookedSeats) : [];
@@ -17,6 +20,9 @@ function paynow(details) {
       journeyDate = obj.departureDateTime;
       totalfare = parseInt(obj.fare) * selectedSeats.length;
       busNumber = obj.busNumber;
+      BusFrom = obj.source;
+      BusTo = obj.destination;
+      BusSeatFare = obj.fare;
     }
   });
 
@@ -34,28 +40,17 @@ function paynow(details) {
     seats: journeydetails.selectedSeats,
     journeyDate: journeyDate,
     totalfare: totalfare,
+    fare: BusSeatFare,
+    from: BusFrom,
+    to: BusTo,
   };
   bookedTikets.push(obj_tiket_details);
   localStorage.setItem("buslist", JSON.stringify(buslist));
   localStorage.setItem("bookedTicket", JSON.stringify(bookedTikets));
 
   console.log(obj_tiket_details);
-  document.getElementById("ticketdetailsContainer").style.display = "block";
-  document.getElementById("ticketdetailsContainer").style.zIndex = 11;
-  let elemtntTicket = document.getElementById("tiketdestailsdisplay");
-  elemtntTicket.innerHTML = "";
-  for (const [key, value] of Object.entries(obj_tiket_details)) {
-    if (key !== "busid") {
-      elemtntTicket.insertAdjacentHTML(
-        "beforeend",
-        `
-    <tr><td>${key}</td><td> ${
-          key === journeyDate ? value.replce("T", " ") : value
-        }</td></tr>
-    `
-      );
-    }
-  }
+  //----------------------------------------------------------------------
+  dispalyTicket(obj_tiket_details);
   let Notification = JSON.parse(localStorage.getItem("adminNotification"));
   obj_tiket_details.status = "booked";
   Notification.push(obj_tiket_details);
@@ -66,12 +61,55 @@ function getCurrentUSerDeatails(MobileNumber) {
   try {
     if (localStorage.getItem("reglist") !== null) {
       let registerList = JSON.parse(localStorage.getItem("reglist"));
-      registerList.filter((obj) => obj.mobileNumber === MobileNumber);
-      return registerList[0];
+      const res = registerList.filter(
+        (obj) => obj.mobileNumber === MobileNumber
+      );
+      return res[0];
     }
   } catch (e) {
     console.log(e);
   }
+}
+
+function dispalyTicket(obj) {
+  document.getElementById("ticketdetailsContainer").style.display = "block";
+  document.getElementById("ticketdetailsContainer").style.zIndex = 11;
+  document.getElementById("ticketNumber").innerHTML = obj.pnr;
+  document.getElementById("ticket_busno").innerHTML = obj.BusNumber;
+  document.getElementById("origin_pass").innerHTML = obj.from;
+  document.getElementById("dest_pass").innerHTML = obj.to;
+  document.getElementById("pass_jDate").innerHTML = obj.journeyDate.replace(
+    "T",
+    " "
+  );
+  document.getElementById("bookedperson").innerHTML = obj.BookedBy;
+  document.getElementById("tkt_total_fare").innerHTML = "Rs. " + obj.totalfare;
+
+  let addPassangerTbl = document.getElementById("addPassangerTbl");
+  addPassangerTbl.innerHTML = "";
+
+  addPassangerTbl.insertAdjacentHTML(
+    "beforeend",
+    `<tr>
+  <td>Srl No.</td>
+  <td>Seat No</td>
+  <td>Passanger Name</td>
+  <td>Fare</td>
+</tr>`
+  );
+
+  debugger;
+
+  for (let i = 0; i < obj.passagers.length; i++)
+    addPassangerTbl.insertAdjacentHTML(
+      "beforeend",
+      `<tr>
+  <td>${i + 1}</td>
+  <td>${obj.seats[i]}</td>
+  <td>${obj.passagers[i]}</td>
+  <td>${obj.fare}</td>
+</tr>`
+    );
 }
 
 function showpaymentContainer() {}
@@ -365,7 +403,6 @@ function searchBuses() {
 }
 
 function showBookedTikets() {
-  debugger;
   let TicketElemt = document.getElementById("ticketlist");
   TicketElemt.style.display = "block";
   TicketElemt.style.zIndex = 11;
@@ -392,6 +429,8 @@ function showBookedTikets() {
       // document
       //   .getElementById("ticketlist")
       //   .insertAdjacentHTML("beforeend", `<h1>No Ticketes found<h1>`);
+      document.getElementById("layerBlur").style.display = "none";
+      TicketElemt.style.display = "none";
       alert("You dont have any tickets");
       // TicketElemt.style.display = "none";
       // location.reload();
@@ -449,7 +488,13 @@ function CancleTicket(element) {
 function Download() {
   document.getElementById("downBTN").style.display = "none";
   var ele = document.getElementById("ticketdetails");
-  html2pdf().from(ele).save("ticket.pdf");
+  const opt = {
+    filename: "ticket.pdf",
+    margin: 2,
+    image: { type: "jpeg", quality: 0.9 },
+    jsPDF: { format: "letter", orientation: "portrait" },
+  };
+  html2pdf().set(opt).from(ele).save();
   document.getElementById("downBTN").style.display = "block";
 }
 

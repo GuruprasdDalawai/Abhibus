@@ -191,6 +191,7 @@ input[type="number"]::-webkit-outer-spin-button {
   font-size: 16px;
   color: #fff;
   font-weight: 600;
+  cursor: pointer;
 }
 
 .loginContent,
@@ -281,6 +282,7 @@ input[type="number"]::-webkit-outer-spin-button {
   color: #fff;
   font-weight: 600;
   margin-top: 25px;
+  cursor: button;
 }
 
 .registerContent .Wrapper .btn {
@@ -349,5 +351,36 @@ footer .Wrapper {
   font-size: 15px;
   color: white;
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
 }
+
+.infoBar {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.infoBar address {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+#endFooter {
+  background-color: #6e312d;
+  color: white;
+  font-size: 12px;
+}
+
+#endFooter .Wrapper {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* <div class="Wrapper">
+<div>AbhiBus</div>
+<div class="copyRigh">
+  Copyright @ GSD Technologeis Ltd. All Rights Reserved.
+</div>
+</div> */

@@ -267,3 +267,39 @@ tr {
 #displayContent::-webkit-scrollbar {
   display: none;
 }
+
+.TicketWrapper {
+  margin: 5px;
+}
+
+.TicketHeader {
+  height: 50px;
+  border: 2px solid;
+  text-align: center;
+}
+.TicketHeader h2 {
+  display: block;
+  font-size: 18px;
+}
+
+.PDFTicket table {
+  width: 100%;
+  text-align: center;
+  border-collapse: collapse;
+  margin-top: 5px;
+  font-size: 14px;
+}
+
+.PDFTicket table td {
+  border: 2px solid;
+}
+
+.PDFTicket li {
+  font-size: 12px;
+  margin-left: 10px;
+}
+
+.popup .popupContent #ticketdetails {
+  margin: 0;
+  padding: 0;
+}

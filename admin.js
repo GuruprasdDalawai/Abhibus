@@ -413,6 +413,7 @@ function updateBus(element) {
     F_filterArr.forEach(displayContentBoy); ////////////////////////////////////////////////////////
     localStorage.setItem("buslist", JSON.stringify(buslist));
     document.getElementById("update").style.display = "none";
+    document.getElementById("layerBlur").style.display = "none";
   }
 }
 
@@ -427,6 +428,7 @@ function deleteBus(element) {
   F_filterArr.forEach(displayContentBoy); /////////////////////////////////////////
   localStorage.setItem("buslist", JSON.stringify(removedlist));
   document.getElementById("update").style.display = "none";
+  document.getElementById("layerBlur").style.display = "none";
 }
 
 function generateID_bus() {
